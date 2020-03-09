@@ -48,7 +48,6 @@
 		</adTabbar>
 	</view>
 </template>
-
 <script>
 	// import AppConfig from '@/common/appConfig.js';
 	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
@@ -57,9 +56,11 @@
 	import home from '@/pages/index/home.vue';
 	import mypage from '@/pages/my/my.vue';
 	import music from '@/pages/music/music.vue';
+	import service from '@/service.js';
 	import {
 		mapGetters,
-		mapMutations
+		mapMutations,
+		mapState
 	} from "vuex";
 	export default {
 		components: {
@@ -76,13 +77,28 @@
 			}
 		},
 		computed: {
-			...mapGetters(['getPopState', 'getPlaying'])
+			...mapGetters(['getPopState', 'getPlaying']),
+			...mapState(['userInfo', 'hasLogin'])
 		},
 		onLoad() {
-			console.log("播放状态" + this.getPopState)
+			//首先检查登录状态
+			this.checkLogin();
+
+
 		},
 		methods: {
-			...mapMutations(['setPopState','setPlaying']),
+			...mapMutations(['setPopState', 'setPlaying']),
+			//检查登录状态
+			checkLogin() {
+				console.log("检查登录状态");
+				this.userInfo = service.getUser();
+				console.log(JSON.stringify(this.userInfo));
+				if (!JSON.stringify(this.userInfo)) {
+					//已经登陆
+					this.hasLogin = true;
+					console.log("用户信息：" + JSON.stringify(this.userInfo));
+				}
+			},
 			// 导航栏切换
 			navClick: function(e) {
 				//console.log(e);
@@ -90,7 +106,10 @@
 			},
 			//关闭播放弹出层
 			closePop() {
+				//隐藏弹出层
 				this.setPopState(false);
+				//停止播放
+				this.setPlaying(false);
 			},
 			//打开播放页面
 			openPlaying() {

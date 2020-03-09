@@ -62,9 +62,9 @@
 			//初始化页面大小 185rpx
 			uni.getSystemInfo({
 				success: (res) => {
-					console.log(res);
+					//console.log(res);
 					this.scrollH = res.windowHeight - uni.upx2px(185);
-					console.log(this.scrollH);
+					//console.log(this.scrollH);
 				}
 			})
 		},

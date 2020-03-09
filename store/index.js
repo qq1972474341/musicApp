@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 //状态管理器
 Vue.use(Vuex)
-
+import service from '@/service.js';
 const store = new Vuex.Store({
 	state: {
 		/* 音乐播放状态*/
@@ -15,21 +15,24 @@ const store = new Vuex.Store({
 		 */
 		forcedLogin: false,
 		hasLogin: false,
-		userName: ""
+		userInfo: {}
 	},
 	//同步事件
 	mutations: {
-		login(state, userName) {
-			state.userName = userName || '新用户';
+		login(state, userInfo) {
 			state.hasLogin = true;
+			state.userInfo = userInfo;
+			service.setUser(userInfo);
+		 
+			console.log(JSON.stringify(service.getUser()));
 		},
 		logout(state) {
-			state.userName = "";
 			state.hasLogin = false;
+			service.setUser({});
+			
 		},
 		//更改音乐弹出层显示状态
 		setPopState(state, bool) {
-
 			state.popState = bool;
 		},
 		//更改音乐播放状态
