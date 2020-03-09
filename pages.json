@@ -1,0 +1,68 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {}
+	}, {
+		"path": "pages/my/my",
+		"style": {}
+	}, {
+		"path": "pages/playing/playing",
+		"style": {
+			"app-plus": {
+				"animationType": "slide-in-bottom"
+			}
+		}
+	}, {
+		"path": "pages/search/search",
+		"style": {
+			"navigationStyle": "default",
+			"app-plus": {
+				"titleNView": {
+					// "type": "transparent", //透明渐变导航栏 App-nvue 2.4.4+ 支持
+					"searchInput": {
+						"backgroundColor": "#282828",
+						"borderRadius": "6px", //输入框圆角
+						"placeholder": "搜索音乐"
+					}
+				}
+			}
+		}
+	}, {
+		"path": "pages/set/set",
+		"style": {
+			"navigationStyle":"default",
+			"navigationBarTitleText": "设置"
+		}
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "音乐",
+		"navigationBarBackgroundColor": "#282828",
+		"backgroundColor": "#000000",
+		"navigationStyle": "custom"
+	}
+	// ,
+	// "tabBar": {
+	// 	"color": "#5d5d5d",
+	// 	"selectedColor": "#e4e4e4",
+	// 	"backgroundColor": "#1d1d1d",
+	// 	"borderStyle": "black",
+	// 	"height":"60px",
+	// 	"list": [{
+	// 		"pagePath": "pages/index/index",
+	// 		"iconPath": "static/tabbar/index.png",
+	// 		"selectedIconPath": "static/tabbar/indexed.png",
+	// 		"text": "首页"
+	// 	}, {
+	// 		"pagePath": "pages/music/music",
+	// 		"iconPath": "static/tabbar/music.png",
+	// 		"selectedIconPath": "static/tabbar/musiced.png",
+	// 		"text": "串烧音乐"
+	// 	}, {
+	// 		"iconPath": "static/tabbar/my.png",
+	// 		"selectedIconPath": "static/tabbar/myed.png",
+	// 		"pagePath": "pages/my/my",
+	// 		"text": "我的"
+	// 	}]
+	// }
+}
