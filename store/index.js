@@ -23,13 +23,11 @@ const store = new Vuex.Store({
 			state.hasLogin = true;
 			state.userInfo = userInfo;
 			service.setUser(userInfo);
-		 
-			console.log(JSON.stringify(service.getUser()));
+			//console.log(JSON.stringify(service.getUser()));
 		},
 		logout(state) {
 			state.hasLogin = false;
-			service.setUser({});
-			
+			service.clearUser();
 		},
 		//更改音乐弹出层显示状态
 		setPopState(state, bool) {

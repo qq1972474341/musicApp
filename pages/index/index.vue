@@ -83,19 +83,16 @@
 		onLoad() {
 			//首先检查登录状态
 			this.checkLogin();
-
-
 		},
 		methods: {
-			...mapMutations(['setPopState', 'setPlaying']),
+			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout']),
+
 			//检查登录状态
 			checkLogin() {
 				console.log("检查登录状态");
-				this.userInfo = service.getUser();
-				console.log(JSON.stringify(this.userInfo));
-				if (!JSON.stringify(this.userInfo)) {
+				if (!(service.getUser() === '')) {
 					//已经登陆
-					this.hasLogin = true;
+					this.login(service.getUser());
 					console.log("用户信息：" + JSON.stringify(this.userInfo));
 				}
 			},
