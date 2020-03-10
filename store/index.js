@@ -15,18 +15,21 @@ const store = new Vuex.Store({
 		 */
 		forcedLogin: false,
 		hasLogin: false,
-		userInfo: {}
+		userInfo: {},
+		Audio:uni.createInnerAudioContext() //创建一个全局音频对象
 	},
 	//同步事件
 	mutations: {
+		//登录
 		login(state, userInfo) {
 			state.hasLogin = true;
 			state.userInfo = userInfo;
 			service.setUser(userInfo);
-			//console.log(JSON.stringify(service.getUser()));
 		},
+		//退出登录
 		logout(state) {
 			state.hasLogin = false;
+			state.userInfo = {};
 			service.clearUser();
 		},
 		//更改音乐弹出层显示状态
@@ -43,9 +46,11 @@ const store = new Vuex.Store({
 
 	},
 	getters: {
+		//获取音乐弹出层位置
 		getPopState(state) {
 			return state.popState;
 		},
+		//获取播放状态
 		getPlaying(state) {
 			return state.playing;
 		}

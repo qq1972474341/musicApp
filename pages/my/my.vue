@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="flex flex-row p-2 align-center" hover-class="bg-dark">
-			<image class="rounded-circle" :src="userInfo.avatarUrl?userInfo.avatarUrl:'../../static/demo/default.jpg'" style="width: 75rpx;height: 75rpx;"></image>
+			<image class="rounded-circle" :src="hasLogin?userInfo.avatarUrl:'../../static/demo/default.jpg'" style="width: 75rpx;height: 75rpx;"></image>
 			<view class="flex flex-column px-2 justify-center">
 				<template v-if="hasLogin">
 					<text class="text-white font-sm">{{userInfo.nickName}}</text>
@@ -36,13 +36,8 @@
 		data() {
 			return {
 				list: [{
-						name: "最近播放",
-						icon: "iconzuijinchangyong",
-						url: "../set/set"
-					},
-					{
-						name: "下载内容",
-						icon: "icondownload",
+						name: "播放列表",
+						icon: "iconbofangliebiao2",
 						url: "../set/set"
 					},
 					{

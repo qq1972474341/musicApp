@@ -29,12 +29,20 @@
 					<evan-switch size="20"></evan-switch>
 				</view>
 			</uni-list-item>
+			<view v-if="hasLogin" class="w-100 justify-center align-center fixed-bottom mb-5">
+				<button type="primary" style="width: 240rpx;" @tap="logOut">退出登录</button>
+			</view>
 		</uni-list>
 	</view>
 </template>
 
 <script>
 	import evanSwitch from '@/components/evan-switch/evan-switch.vue'
+	//mapMutations
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default {
 		components: {
 			evanSwitch
@@ -44,8 +52,20 @@
 
 			}
 		},
+		computed: {
+			...mapState(['userInfo', 'hasLogin'])
+		},
 		methods: {
-
+			...mapMutations(['logout']),
+			logOut() {
+				this.logout();
+				uni.navigateBack({
+					delta: 1
+				})
+			}
+		},
+		onLoad() {
+			console.log("登录状态:" + this.hasLogin);
 		}
 	}
 </script>

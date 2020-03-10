@@ -48,31 +48,37 @@
 				],
 				list: [{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					},
 					{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					},
 					{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					},
 					{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					},
 					{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					},
 					{
 						img: "/static/demo/demo1.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3",
 						name: "YHLQMD",
 						desc: "描述"
 					}
@@ -95,7 +101,7 @@
 			selectMusic(index) {
 				this.$store.commit("setPopState", true);
 				uni.navigateTo({
-					url: "../playing/playing"
+					url: "../playing/playing?item=" + JSON.stringify(this.list[index])
 				})
 			},
 			//底部导航栏监听点击事件
@@ -121,6 +127,7 @@
 	page {
 		background-color: #000000;
 	}
+
 	image {
 		/* 去除image上下间隙 */
 		margin: 0;

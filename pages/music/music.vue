@@ -38,22 +38,28 @@
 					contentnomore: "没有更多数据了"
 				},
 				list: [{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					},
 					{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					},
 					{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					},
 					{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					},
 					{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					},
 					{
-						img: "/static/demo/demo2.jpg"
+						img: "/static/demo/demo2.jpg",
+						url: "https://taofen-bucket.oss-cn-beijing.aliyuncs.com/test.mp3"
 					}
 				]
 			}
@@ -72,7 +78,7 @@
 			//选择音乐
 			selectMusic(index) {
 				uni.navigateTo({
-					url: "../playing/playing"
+					url: "../playing/playing?item=" + JSON.stringify(this.list[index])
 				})
 			},
 			//加载更多

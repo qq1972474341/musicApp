@@ -22,13 +22,13 @@
 						<text class="text-light-muted font font-weight-bold">Lady Gaga - Stupid Love</text>
 					</view>
 					<view class="flex flex-1 ml-1">
-						<view class="iconfont text-white" :class="getPlaying?'iconzanting-':'iconbofang'" @tap.stop="play"></view>
+						<view class="iconfont text-white" :class="getPlaying?'iconzanting-':'iconbofang'" @tap.stop="changeState"></view>
 						<view class="iconfont iconguanbi text-white mr-4" style="margin-left: auto;" @tap.stop="closePop" hover-class="animated pulse"></view>
 					</view>
 				</view>
 			</view>
 			<view>
-				<progress percent="60" active stroke-width="1" backgroundColor="#999" />
+				<progress :percent="progressNum" stroke-width="1" backgroundColor="#999" />
 			</view>
 		</view>
 		<!-- 页面 -->
@@ -74,19 +74,25 @@
 		data() {
 			return {
 				curPage: 'home',
+				progressNum: 0
 			}
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['userInfo', 'hasLogin'])
+			...mapState(['userInfo', 'hasLogin', 'Audio']),
 		},
 		onLoad() {
 			//首先检查登录状态
 			this.checkLogin();
+
+			//监听音乐播放进度变化  不需要卸载 主页面
+			this.Audio.onTimeUpdate(() => {
+				//console.log("音乐弹出层监听:" + this.Audio.currentTime);
+				this.progressNum = (this.Audio.currentTime / this.Audio.duration) * 100;
+			})
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout']),
-
 			//检查登录状态
 			checkLogin() {
 				console.log("检查登录状态");
@@ -107,6 +113,8 @@
 				this.setPopState(false);
 				//停止播放
 				this.setPlaying(false);
+				this.Audio.stop(); //停止播放
+				this.Audio.src = ""; //音频连接置空
 			},
 			//打开播放页面
 			openPlaying() {
@@ -121,8 +129,17 @@
 				})
 			},
 			//播放和暂停
-			play() {
-				this.setPlaying(!this.getPlaying);
+			changeState() {
+				console.log((this.Audio.currentTime / this.Audio.duration) * 100);
+				if (this.getPlaying) {
+					//暂停播放
+					this.Audio.pause();
+					this.setPlaying(false);
+				} else {
+					//继续播放
+					this.Audio.play();
+					this.setPlaying(true);
+				}
 			}
 
 
