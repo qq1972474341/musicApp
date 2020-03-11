@@ -20,7 +20,7 @@
 				"titleNView": {
 					// "type": "transparent", //透明渐变导航栏 App-nvue 2.4.4+ 支持
 					"searchInput": {
-						"backgroundColor": "#282828",
+						"backgroundColor": "#FFF",
 						"borderRadius": "6px", //输入框圆角
 						"placeholder": "搜索音乐"
 					}
@@ -30,10 +30,28 @@
 	}, {
 		"path": "pages/set/set",
 		"style": {
-			"navigationStyle":"default",
+			"navigationStyle": "default",
 			"navigationBarTitleText": "设置"
 		}
-	}],
+	}    ,{
+            "path" : "pages/message/message",
+            "style" : {
+				"navigationStyle":"default",
+				"navigationBarTitleText":"消息通知"
+			}
+        }
+        ,{
+            "path" : "pages/play-list/play-list",
+            "style" : {
+				"navigationStyle":"default",
+				"navigationBarTitleText":"播放列表"
+			}
+        }
+        ,{
+            "path" : "pages/msg-detail/msg-detail",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "音乐",

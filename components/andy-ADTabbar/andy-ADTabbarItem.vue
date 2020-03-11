@@ -1,12 +1,7 @@
 <template>
-	<view class="tabItem" @click="onClick" :data-cur="dataCur">
+	<view class="tabItem" @click="onClick" :data-cur="dataCur" hover-class="animated bounceIn">
 		<image class="tabIcon" :src="icon"></image>
-		<!-- #ifdef MP-WEIXIN -->
 		<view :style="{color: textColor, fontSize: textSize + 'rpx'}">{{text}}</view>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-		<view :style="{color: textColor, fontSize: textSize + 'upx'}">{{text}}</view>
-		<!-- #endif -->
 	</view>
 </template>
 

@@ -16,7 +16,8 @@ const store = new Vuex.Store({
 		forcedLogin: false,
 		hasLogin: false,
 		userInfo: {},
-		Audio:uni.createInnerAudioContext() //创建一个全局音频对象
+		Audio: uni.createInnerAudioContext(), //创建一个全局音频对象
+		Music: {} //存储一个音乐对象
 	},
 	//同步事件
 	mutations: {
@@ -39,6 +40,10 @@ const store = new Vuex.Store({
 		//更改音乐播放状态
 		setPlaying(state, bool) {
 			state.playing = bool;
+		},
+		//设置音乐对象
+		setMusic(state, music) {
+			state.Music = music;
 		}
 	},
 	//异步事件

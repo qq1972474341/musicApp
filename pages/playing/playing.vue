@@ -3,21 +3,25 @@
 		<view class="status_bar">
 			<!-- 这里是状态栏 -->
 		</view>
+		<view class="ml-3 mt-2" hover-class="animated jello" @tap="back">
+			<text class="text-white iconfont iconfanhui-copy-copy font-lg font-weight-bold"></text>
+		</view>
 		<view class="mt-5">
-			<image src="../../static/demo/demo2.jpg" style="width: 750rpx;height: 425rpx;">
+			<!-- 显示图片 -->
+			<image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
 		</view>
 		<view class="fixed-bottom" style="background-color: #131313;height: 740rpx;width: 750rpx;">
 			<view style="height: 200rpx;"></view> <!-- 占位符 -->
 			<!-- 文字滚动 -->
 			<view class="m-2 rounded">
 				<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF" :scrollable="!pause"
-				 :speed="30" single="true" text="我是快乐的滚动条!我是快乐的滚动条!我是快乐的滚动条!"></uni-notice-bar>
+				 :speed="30" single="true" :text="Music.name+'        '+Music.author"></uni-notice-bar>
 			</view>
 
 			<view class="flex justify-center flex-column">
 				<!-- 播放滑动条 -->
-				<slider backgroundColor="#434343" :max="music.max" :value="music.played" block-size="12" activeColor="#FFFFFF" style="width: 660rpx;"
-				 @changing="sliderChanging" @change="sliderChanged"></slider>
+				<slider backgroundColor="#434343" :max="music.max" :value="music.played" block-size="12" activeColor="#FFFFFF"
+				 style="width: 660rpx;" @changing="sliderChanging" @change="sliderChanged"></slider>
 				<view class="flex justify-between px-5" style="margin-top: -10px;">
 					<text class="text-light-muted font-sm">{{formatTime1}}</text>
 					<text class="text-light-muted font-sm">{{formatTime2}}</text>
@@ -44,9 +48,9 @@
 </template>
 
 <script>
-	let ITEM; //音乐数据
 	//const Audio = uni.createInnerAudioContext(); //创建一个音频对象
 	import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue';
+	import service from '@/service.js';
 	import $T from '@/common/time.js';
 	import {
 		mapGetters,
@@ -67,7 +71,7 @@
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['Audio']),
+			...mapState(['Audio', 'Music']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
@@ -75,14 +79,14 @@
 				return $T.formatSeconds(this.music.max);
 			}
 		},
-		onLoad(e) {
-			
-			if (e.item != undefined) {
+		onLoad() {
+			if (this.Music != {} && this.Music != undefined) {
 				console.log("音乐页面");
-				ITEM = JSON.parse(e.item);
+				//添加到播放列表
+				service.addPlayList(this.Music);
 				//初始化音频对象数据
 				this.Audio.autoplay = true;
-				this.Audio.src = ITEM.url;
+				this.Audio.src = this.Music.src;
 				this.Audio.onPlay(() => {
 					console.log('开始播放');
 					this.setPlaying(true); //置播放状态 为 true
@@ -92,8 +96,10 @@
 					console.log(res.errCode);
 				});
 			}
+			//暂停状态下置
+			this.music.max = this.Audio.duration; //音乐总时长
+			this.music.played = this.Audio.currentTime;
 			//监听音乐播放进度变化
-
 			this.Audio.onTimeUpdate(this.onTimeUpdate);
 
 		},
@@ -103,6 +109,12 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying']),
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			//音乐方波进度变化事件
 			onTimeUpdate() {
 				//this.$mp.page.$getAppWebview().id 
 				//console.log("音乐播放页:" + this.Audio.currentTime);

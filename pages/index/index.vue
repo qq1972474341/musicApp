@@ -11,15 +11,21 @@
 				<uni-icons class="input-uni-icon" type="search" size="22" color="#666666" />
 				<input confirm-type="search" class="nav-bar-input" type="text" placeholder="输入搜索关键词" disabled>
 			</view>
+			<view slot="right" @tap="openMessage">
+				<uni-icons type="chat" color="#fff" size="24"></uni-icons>
+				<view class="position-absolute" style="top: 30rpx;right:30rpx;z-index: 99999;">
+					<uni-badge text="2" type="error"></uni-badge>
+				</view>
+			</view>
 		</uni-nav-bar>
 		<!-- 播放弹出层 -->
 		<view v-show="getPopState" class="flex flex-column position-fixed w-100" style="bottom: 95rpx;z-index: 9999;">
 			<view class="flex flex-row">
-				<image src="../../static/demo/demo2.jpg" style="width: 190rpx;height: 110rpx;" @tap="openPlaying"></image>
+				<image :src="Music.img" style="width: 190rpx;height: 110rpx;" @tap="openPlaying" mode="aspectFill"></image>
 				<view class="flex-1 flex align-center" style="background-color: #1d1d1d;" @tap="openPlaying">
 					<view class="flex flex-column ml-3" style="width: 360rpx;">
-						<text class="text-white font font-weight-bold">Lady Gaga - Stupid Love</text>
-						<text class="text-light-muted font font-weight-bold">Lady Gaga - Stupid Love</text>
+						<text class="text-white font font-weight-bold">{{Music.name}}</text>
+						<text class="text-light-muted font font-weight-bold">{{Music.author}}</text>
 					</view>
 					<view class="flex flex-1 ml-1">
 						<view class="iconfont text-white" :class="getPlaying?'iconzanting-':'iconbofang'" @tap.stop="changeState"></view>
@@ -49,8 +55,9 @@
 	</view>
 </template>
 <script>
-	// import AppConfig from '@/common/appConfig.js';
-	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
+	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue";
+	import uniBadge from '@/components/uni-badge/uni-badge.vue';
 	import adTabbar from '@/components/andy-ADTabbar/andy-ADTabbar.vue';
 	import adTabbarItem from '@/components/andy-ADTabbar/andy-ADTabbarItem.vue';
 	import home from '@/pages/index/home.vue';
@@ -64,6 +71,8 @@
 	} from "vuex";
 	export default {
 		components: {
+			uniIcons,
+			uniBadge,
 			uniNavBar,
 			adTabbar,
 			adTabbarItem,
@@ -79,12 +88,11 @@
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['userInfo', 'hasLogin', 'Audio']),
+			...mapState(['userInfo', 'hasLogin', 'Audio','Music']),
 		},
 		onLoad() {
 			//首先检查登录状态
 			this.checkLogin();
-
 			//监听音乐播放进度变化  不需要卸载 主页面
 			this.Audio.onTimeUpdate(() => {
 				//console.log("音乐弹出层监听:" + this.Audio.currentTime);
@@ -93,13 +101,18 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout']),
+			openMessage() {
+				uni.navigateTo({
+					url: "../message/message"
+				})
+			},
 			//检查登录状态
 			checkLogin() {
-				console.log("检查登录状态");
+				//console.log("检查登录状态");
 				if (!(service.getUser() === '')) {
 					//已经登陆
 					this.login(service.getUser());
-					console.log("用户信息：" + JSON.stringify(this.userInfo));
+					//console.log("用户信息：" + JSON.stringify(this.userInfo));
 				}
 			},
 			// 导航栏切换

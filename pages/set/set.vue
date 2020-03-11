@@ -29,9 +29,6 @@
 					<evan-switch size="20"></evan-switch>
 				</view>
 			</uni-list-item>
-			<view v-if="hasLogin" class="w-100 justify-center align-center fixed-bottom mb-5">
-				<button type="primary" style="width: 240rpx;" @tap="logOut">退出登录</button>
-			</view>
 		</uni-list>
 	</view>
 </template>
@@ -56,13 +53,7 @@
 			...mapState(['userInfo', 'hasLogin'])
 		},
 		methods: {
-			...mapMutations(['logout']),
-			logOut() {
-				this.logout();
-				uni.navigateBack({
-					delta: 1
-				})
-			}
+	
 		},
 		onLoad() {
 			console.log("登录状态:" + this.hasLogin);
