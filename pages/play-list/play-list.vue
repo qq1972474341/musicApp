@@ -1,34 +1,58 @@
 <template>
 	<view>
-		<block v-for="(item,index) in list" :key="index">
-			<view class="flex m-2" @tap="selectMusic(index)">
-				<image :src="item.img" mode="aspectFill" style="width: 100rpx;height: 100rpx;"></image>
-				<view class="flex flex-column justify-center ml-2">
-					<text class="text-white">{{item.name}}</text>
-					<text class="text-light-muted font">{{item.author}}</text>
-				</view>
-			</view>
-		</block>
+		<uni-swipe-action>
+			<block v-for="(item,index) in list" :key="index">
+				<uni-swipe-action-item :options="option_list" @click="selectOption(index,$event)">
+					<view class="flex m-2 flex-1" @tap="selectMusic(index)">
+						<image :src="item.img" mode="aspectFill" style="width: 100rpx;height: 100rpx;"></image>
+						<view class="flex flex-column justify-center ml-2">
+							<text class="text-white">{{item.name}}</text>
+							<text class="text-light-muted font">{{item.author}}</text>
+						</view>
+					</view>
+				</uni-swipe-action-item>
+			</block>
+		</uni-swipe-action>
+
 	</view>
 </template>
 
 <script>
 	import service from '@/service.js';
+	import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
+	import uniSwipeActionItem from '@/components/uni-swipe-action-item/uni-swipe-action-item.vue'
 	import {
 		mapMutations
 	} from "vuex";
 	export default {
+		components: {
+			uniSwipeAction,
+			uniSwipeActionItem
+		},
 		data() {
 			return {
-				list: []
+				list: [],
+				option_list: [{
+					text: '删除',
+					style: {
+						backgroundColor: '#dd524d'
+					}
+				}]
 			}
 		},
 		onLoad() {
-			//console.log(JSON.stringify(service.getPlayList()));
 			this.list = service.getPlayList();
 		},
 		methods: {
 			...mapMutations(['setMusic']),
+			//左滑菜单选项
+			selectOption(index, e) {
+				if (e.index === 0) {
+					service.deletePlayListItem(index);
+					this.list = service.getPlayList();
+				}
+			},
+			//选择音乐
 			selectMusic(index) {
 				this.$store.commit("setPopState", true);
 				this.setMusic(this.list[index]);

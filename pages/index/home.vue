@@ -118,7 +118,6 @@
 			...mapMutations(['setMusic']),
 			//选择音乐
 			selectMusic(index) {
-				this.$store.commit("setPopState", true);  //可用mutations方法代替
 				this.setMusic(this.list[index]);
 				uni.navigateTo({
 					url: "../playing/playing"

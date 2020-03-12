@@ -33,25 +33,25 @@
 			"navigationStyle": "default",
 			"navigationBarTitleText": "设置"
 		}
-	}    ,{
-            "path" : "pages/message/message",
-            "style" : {
-				"navigationStyle":"default",
-				"navigationBarTitleText":"消息通知"
-			}
-        }
-        ,{
-            "path" : "pages/play-list/play-list",
-            "style" : {
-				"navigationStyle":"default",
-				"navigationBarTitleText":"播放列表"
-			}
-        }
-        ,{
-            "path" : "pages/msg-detail/msg-detail",
-            "style" : {}
-        }
-    ],
+	}, {
+		"path": "pages/message/message",
+		"style": {
+			"navigationStyle": "default",
+			"navigationBarTitleText": "消息通知"
+		}
+	}, {
+		"path": "pages/play-list/play-list",
+		"style": {
+			"app-plus": {
+				"bounce": "none"
+			},
+			"navigationStyle": "default",
+			"navigationBarTitleText": "播放列表"
+		}
+	}, {
+		"path": "pages/msg-detail/msg-detail",
+		"style": {}
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "音乐",

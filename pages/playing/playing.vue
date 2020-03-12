@@ -3,6 +3,10 @@
 		<view class="status_bar">
 			<!-- 这里是状态栏 -->
 		</view>
+		#
+		<!-- #ifdef APP-PLUS -->
+
+		<!-- #endif -->
 		<view class="ml-3 mt-2" hover-class="animated jello" @tap="back">
 			<text class="text-white iconfont iconfanhui-copy-copy font-lg font-weight-bold"></text>
 		</view>
@@ -80,7 +84,38 @@
 			}
 		},
 		onLoad() {
-			if (this.Music != {} && this.Music != undefined) {
+			let that = this; //传递自身this
+			uni.getNetworkType({
+				success: function(res) {
+					console.log(res.networkType);
+					console.log(service.getSetting().onlyUseWifi);
+					if (res.networkType !== "wifi" && service.getSetting().onlyUseWifi || res.networkType !== "wifi" && service.getSetting()
+						.onlyUseWifi ===
+						undefined) {
+						console.log("当前非wifi状态 使用流量播放");
+						uni.showModal({
+							title: '提示',
+							content: '继续将使用流量播放',
+							confirmText: '继续',
+							success: (res) => {
+								//取消返回上一个页面
+								if (res.cancel) {
+									that.$store.commit("setPopState", false);  //关闭音乐弹出层
+									that.Music = {}; //音乐数据置空
+									uni.navigateBack({
+										delta: 1
+									})
+								} else {
+									//使用流量播放
+									service.setSetting('onlyUseWifi', false);
+								}
+							}
+						})
+					}
+				},
+			});
+			this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
+			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined) {
 				console.log("音乐页面");
 				//添加到播放列表
 				service.addPlayList(this.Music);
@@ -101,7 +136,6 @@
 			this.music.played = this.Audio.currentTime;
 			//监听音乐播放进度变化
 			this.Audio.onTimeUpdate(this.onTimeUpdate);
-
 		},
 		onUnload() {
 			console.log("播放页面卸载");
@@ -148,7 +182,18 @@
 			},
 			//分享歌曲
 			share() {
-				console.log("分享歌曲")
+				console.log("分享歌曲");
+				uni.share({
+					provider: 'weixin',
+					scene: "WXSenceTimeline",
+					type: 3,
+					imageUrl: this.Music.img,
+					title: this.Music.name,
+					mediaUrl: this.Music.src,
+					success: ret => {
+						console.log(JSON.stringify(ret));
+					}
+				});
 			}
 		}
 	}
