@@ -23,6 +23,10 @@ const store = new Vuex.Store({
 	},
 	//同步事件
 	mutations: {
+		//设置一个全局音频对象实例
+		setAudio(state, audio) {
+			state.Audio = audio;
+		},
 		//登录
 		login(state, userInfo) {
 			state.hasLogin = true;

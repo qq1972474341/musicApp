@@ -95,19 +95,6 @@
 			this.checkLogin();
 			//音乐资源加载后自动播放
 			this.Audio.autoplay = true;
-			//音乐开始播放监听
-			// this.Audio.onPlay(() => {
-			// 	if (!this.hasLogin) {
-			// 		this.Audio.stop();
-			// 		this.$store.commit("setPopState", false); //关闭音乐弹出层
-			// 		this.setMusic(undefined);
-			// 		plus.nativeUI.alert('请先登录后听音乐', () => {
-			// 			uni.navigateBack({
-			// 				delta: 1
-			// 			})
-			// 		});
-			// 	}
-			// })
 			//监听音乐播放进度变化  不需要卸载 主页面
 			this.Audio.onTimeUpdate(() => {
 				//console.log("音乐弹出层监听:" + this.Audio.currentTime);
