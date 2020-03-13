@@ -41,10 +41,11 @@
 			}
 		},
 		onLoad() {
+			console.log(JSON.stringify(service.getPlayList()));
 			this.list = service.getPlayList();
 		},
 		methods: {
-			...mapMutations(['setMusic']),
+			...mapMutations(['setPopState', 'setMusic', 'setPlayMode', 'setMusicLocalIndex']),
 			//左滑菜单选项
 			selectOption(index, e) {
 				if (e.index === 0) {
@@ -54,8 +55,10 @@
 			},
 			//选择音乐
 			selectMusic(index) {
-				this.$store.commit("setPopState", true);
-				this.setMusic(this.list[index]);
+				this.setPopState(true); //设置音乐弹层显示
+				this.setMusic(this.list[index]); //设置当前音乐资源
+				this.setPlayMode('playList'); //设置播放列表播放模式
+				this.setMusicLocalIndex(index); //设置当前播放列表音乐索引
 				uni.navigateBack({
 					delta: 1
 				});

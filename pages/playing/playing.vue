@@ -75,7 +75,7 @@
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['Audio', 'Music']),
+			...mapState(['Audio', 'Music', 'hasLogin']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
@@ -83,12 +83,26 @@
 				return $T.formatSeconds(this.music.max);
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+
+			console.log("登录状态：" + this.hasLogin);
+			//播放音乐登录检查
+			if (!this.hasLogin) {
+				this.Audio.stop();
+				this.$store.commit("setPopState", false); //关闭音乐弹出层
+				//this.setMusic(undefined);
+				plus.nativeUI.alert('请先登录后听音乐', () => {
+					uni.navigateBack({
+						delta: 1
+					})
+				});
+				return;
+			}
 			let that = this; //传递自身this
 			uni.getNetworkType({
 				success: function(res) {
-					console.log(res.networkType);
-					console.log(service.getSetting().onlyUseWifi);
+					//console.log(res.networkType);
+					//console.log(service.getSetting().onlyUseWifi);
 					if (res.networkType !== "wifi" && service.getSetting().onlyUseWifi || res.networkType !== "wifi" && service.getSetting()
 						.onlyUseWifi ===
 						undefined) {
@@ -100,8 +114,8 @@
 							success: (res) => {
 								//取消返回上一个页面
 								if (res.cancel) {
-									that.$store.commit("setPopState", false);  //关闭音乐弹出层
-									that.Music = {}; //音乐数据置空
+									that.$store.commit("setPopState", false); //关闭音乐弹出层
+									this.setMusic(undefined); //音乐数据置空
 									uni.navigateBack({
 										delta: 1
 									})
@@ -120,16 +134,16 @@
 				//添加到播放列表
 				service.addPlayList(this.Music);
 				//初始化音频对象数据
-				this.Audio.autoplay = true;
+				// if (this.Audio.src !== this.Music.src) {
+				// 	this.Audio.destroy();
+				// }
 				this.Audio.src = this.Music.src;
-				this.Audio.onPlay(() => {
-					console.log('开始播放');
-					this.setPlaying(true); //置播放状态 为 true
-				});
-				this.Audio.onError((res) => {
-					console.log(res.errMsg);
-					console.log(res.errCode);
-				});
+				console.log('开始播放');
+				this.setPlaying(true); //置播放状态 为 true
+				// this.Audio.onPlay(() => {
+				// 	console.log('开始播放');
+				// 	this.setPlaying(true); //置播放状态 为 true
+				// });
 			}
 			//暂停状态下置
 			this.music.max = this.Audio.duration; //音乐总时长
@@ -142,7 +156,7 @@
 			this.Audio.offTimeUpdate(this.onTimeUpdate); //卸载监听事件
 		},
 		methods: {
-			...mapMutations(['setPopState', 'setPlaying']),
+			...mapMutations(['setPopState', 'setPlaying', 'setMusic']),
 			back() {
 				uni.navigateBack({
 					delta: 1
@@ -191,6 +205,8 @@
 					title: this.Music.name,
 					mediaUrl: this.Music.src,
 					success: ret => {
+						//点击分享回调
+						console.log("分享点击回调")
 						console.log(JSON.stringify(ret));
 					}
 				});

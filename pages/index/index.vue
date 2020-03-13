@@ -87,20 +87,71 @@
 			}
 		},
 		computed: {
-			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['userInfo', 'hasLogin', 'Audio','Music']),
+			...mapGetters(['getPopState', 'getPlaying', 'getPlayMode']),
+			...mapState(['userInfo', 'hasLogin', 'Audio', 'Music']),
 		},
 		onLoad() {
 			//首先检查登录状态
 			this.checkLogin();
+			//音乐资源加载后自动播放
+			this.Audio.autoplay = true;
+			//音乐开始播放监听
+			// this.Audio.onPlay(() => {
+			// 	if (!this.hasLogin) {
+			// 		this.Audio.stop();
+			// 		this.$store.commit("setPopState", false); //关闭音乐弹出层
+			// 		this.setMusic(undefined);
+			// 		plus.nativeUI.alert('请先登录后听音乐', () => {
+			// 			uni.navigateBack({
+			// 				delta: 1
+			// 			})
+			// 		});
+			// 	}
+			// })
 			//监听音乐播放进度变化  不需要卸载 主页面
 			this.Audio.onTimeUpdate(() => {
 				//console.log("音乐弹出层监听:" + this.Audio.currentTime);
 				this.progressNum = (this.Audio.currentTime / this.Audio.duration) * 100;
 			})
+			this.Audio.onEnded(() => {
+				//登录状态检查
+				if (!this.hasLogin) {
+					this.Audio.stop();
+					this.$store.commit("setPopState", false); //关闭音乐弹出层
+					//this.setMusic(undefined);
+					plus.nativeUI.alert('请先登录后听音乐', () => {
+						uni.navigateBack({
+							delta: 1
+						})
+					});
+					return;
+				}
+				console.log("音乐自然播放结束切歌");
+				let musicIndex = 0;
+				if (this.getPlayMode === 'playList') {
+					console.log("播放列表历史播放模式");
+					//console.log(this.$store.state.MusicLocalIndex);
+					let max = service.getPlayList().length - 1; //获取播放列表最大索引
+					//顺序循环播放模式
+					if (this.$store.state.MusicLocalIndex === max) {
+						//播放到最后一首从头开始
+						musicIndex = 0;
+						this.setMusicLocalIndex(musicIndex);
+					} else {
+						musicIndex = this.$store.state.MusicLocalIndex + 1
+						this.setMusicLocalIndex(musicIndex);
+					}
+					console.log(musicIndex);
+					this.setMusic(service.getPlayListMusic(musicIndex))
+					console.log(this.Music);
+					this.Audio.src = this.Music.src;
+				} else {
+					console.log("自由播放模式");
+				}
+			})
 		},
 		methods: {
-			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout']),
+			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic']),
 			openMessage() {
 				uni.navigateTo({
 					url: "../message/message"
@@ -115,7 +166,7 @@
 					//console.log("用户信息：" + JSON.stringify(this.userInfo));
 				}
 			},
-			// 导航栏切换
+			// 底部导航栏切换
 			navClick: function(e) {
 				//console.log(e);
 				this.curPage = e.currentTarget.dataset.cur
@@ -124,10 +175,10 @@
 			closePop() {
 				//隐藏弹出层
 				this.setPopState(false);
-				//停止播放
+				//停止播放状态
 				this.setPlaying(false);
 				this.Audio.stop(); //停止播放
-				this.Audio.src = ""; //音频连接置空
+				this.Audio.src = ""; //音频资源置空
 			},
 			//打开播放页面
 			openPlaying() {

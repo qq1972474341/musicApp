@@ -17,7 +17,9 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		userInfo: {},
 		Audio: uni.createInnerAudioContext(), //创建一个全局音频对象
-		Music: {} //存储一个音乐对象
+		Music: {}, //存储一个音乐对象
+		MusicLocalIndex: 0, //音乐播放本地标记索引
+		playMode: "",
 	},
 	//同步事件
 	mutations: {
@@ -44,6 +46,14 @@ const store = new Vuex.Store({
 		//设置音乐对象
 		setMusic(state, music) {
 			state.Music = music;
+		},
+		//设置播放模式
+		setPlayMode(state, mode) {
+			state.playMode = mode;
+		},
+		//设置当前播放页音乐 本地数据索引
+		setMusicLocalIndex(state, index) {
+			state.MusicLocalIndex = index;
 		}
 	},
 	//异步事件
@@ -51,13 +61,17 @@ const store = new Vuex.Store({
 
 	},
 	getters: {
-		//获取音乐弹出层位置
+		//获取音乐弹出层状态
 		getPopState(state) {
 			return state.popState;
 		},
 		//获取播放状态
 		getPlaying(state) {
 			return state.playing;
+		},
+		//获取播放模式
+		getPlayMode(state) {
+			return state.playMode;
 		}
 	}
 })

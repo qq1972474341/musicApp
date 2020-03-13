@@ -13,7 +13,7 @@
 					</template>
 				</view>
 			</view>
-			<view class="m-2">
+			<view v-show="hasLogin" class="m-2">
 				<text class="text-white font-sm">听歌点数：15</text>
 			</view>
 		</view>
@@ -39,7 +39,7 @@
 	} from 'vuex';
 	export default {
 		computed: {
-			...mapState(['hasLogin', 'userInfo'])
+			...mapState(['hasLogin', 'userInfo','Audio'])
 		},
 		data() {
 			return {
@@ -72,8 +72,11 @@
 					content: '\n 确定要切换账号吗?',
 					success: (res) => {
 						if (res.confirm) {
+							//停止音乐服务
+							this.Audio.stop();
+							this.$store.commit("setPopState", false); //关闭音乐弹出层
+							//登出账号
 							this.logout();
-							this.$forceUpdate();
 						}
 					}
 				})
@@ -84,7 +87,7 @@
 					uni.login({
 						provider: 'weixin',
 						success: (res) => {
-							console.log(res);
+							//console.log(res);
 							uni.getUserInfo({
 								provider: 'weixin',
 								success: (infoRes) => {
@@ -92,7 +95,7 @@
 									 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
 									 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
 									 */
-									console.log(infoRes);
+									//console.log(infoRes);
 									this.login(infoRes.userInfo);
 								},
 								fail() {

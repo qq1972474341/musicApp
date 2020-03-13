@@ -11,6 +11,9 @@
 
 			}
 		},
+		onLoad(e) {
+			console.log("搜索内容")
+		},
 		methods: {
 
 		}

@@ -50,7 +50,16 @@
 		}
 	}, {
 		"path": "pages/msg-detail/msg-detail",
-		"style": {}
+		"style": {
+			"navigationStyle": "default",
+			"navigationBarTitleText": "消息详情"
+		}
+	}, {
+		"path": "pages/search-reasult/search-reasult",
+		"style": {
+			"navigationStyle": "default",
+			"navigationBarTitleText": "搜索结果"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
