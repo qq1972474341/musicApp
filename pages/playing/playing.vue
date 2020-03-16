@@ -84,7 +84,6 @@
 			}
 		},
 		onLoad(e) {
-
 			console.log("登录状态：" + this.hasLogin);
 			//播放音乐登录检查
 			if (!this.hasLogin) {

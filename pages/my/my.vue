@@ -24,6 +24,13 @@
 					<text class="text-white font-sm">{{item.name}}</text>
 				</view>
 			</block>
+			<view class="flex align-center justify-between" hover-class="bg-hover-secondary" @tap="clear">
+				<view class="flex align-center">
+					<text class="iconfont p-2 text-light-muted font-lg iconqingchu"></text>
+					<text class="text-white font-sm">清除缓存</text>
+				</view>
+				<text class="text-white font-sm mr-1">{{cache|format}}</text>
+			</view>
 			<view v-show="this.hasLogin" class="flex align-center" hover-class="bg-hover-secondary" @tap="switchAccount">
 				<text class="iconfont p-2 text-light-muted font-lg iconqiehuanzhanghao"></text>
 				<text class="text-white font-sm">切换账号</text>
@@ -39,7 +46,7 @@
 	} from 'vuex';
 	export default {
 		computed: {
-			...mapState(['hasLogin', 'userInfo','Audio'])
+			...mapState(['hasLogin', 'userInfo', 'Audio'])
 		},
 		data() {
 			return {
@@ -55,7 +62,13 @@
 						url: "../set/set",
 						show: true
 					}
-				]
+				],
+				cache: 0
+			}
+		},
+		filters: {
+			format(value) {
+				return value > 1024 ? (value / 1024).toFixed(2) + 'MB' : value.toFixed(2) + 'KB';
 			}
 		},
 		methods: {
@@ -130,6 +143,30 @@
 							title: '登陆失败'
 						});
 					}
+				});
+			},
+			//获取当前缓存
+			getStorageInfo(){
+				let res = uni.getStorageInfoSync()
+				this.cache = res.currentSize
+			},
+			// 清除缓存
+			clear() {
+				uni.showModal({
+					title: '提示',
+					content: '是否要清除所有缓存？',
+					cancelText: '不清除',
+					confirmText: '清除',
+					success: res => {
+						if (res.confirm) {
+							uni.clearStorageSync()
+							this.getStorageInfo()
+							uni.showToast({
+								title: '清除成功',
+								icon: 'none'
+							});
+						}
+					},
 				});
 			}
 

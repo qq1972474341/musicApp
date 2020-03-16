@@ -91,6 +91,8 @@
 			...mapState(['userInfo', 'hasLogin', 'Audio', 'Music']),
 		},
 		onLoad() {
+			//监听网络
+			this.$U.onNetWork();
 			//首先检查登录状态
 			this.checkLogin();
 			//音乐资源加载后自动播放
@@ -139,6 +141,7 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic']),
+			//打开消息页面
 			openMessage() {
 				uni.navigateTo({
 					url: "../message/message"
