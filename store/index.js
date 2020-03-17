@@ -16,17 +16,13 @@ const store = new Vuex.Store({
 		forcedLogin: false,
 		hasLogin: false,
 		userInfo: {},
-		Audio: uni.createInnerAudioContext(), //创建一个全局音频对象
+		Audio: uni.getBackgroundAudioManager(), //获取全局唯一的背景音频管理器
 		Music: {}, //存储一个音乐对象
 		MusicLocalIndex: 0, //音乐播放本地标记索引
 		playMode: "",
 	},
 	//同步事件
 	mutations: {
-		//设置一个全局音频对象实例
-		setAudio(state, audio) {
-			state.Audio = audio;
-		},
 		//登录
 		login(state, userInfo) {
 			state.hasLogin = true;
@@ -71,6 +67,7 @@ const store = new Vuex.Store({
 		},
 		//获取播放状态
 		getPlaying(state) {
+			console.log("播放状态:" + state.playing);
 			return state.playing;
 		},
 		//获取播放模式

@@ -38,18 +38,18 @@
 			</view>
 		</view>
 		<!-- 页面 -->
-		<home v-if="curPage=='home'"></home>
-		<music v-if="curPage=='music'"></music>
-		<mypage v-if="curPage=='mypage'"></mypage>
+		<home v-show="curPage=='home'"></home>
+		<music v-show="curPage=='music'"></music>
+		<mypage v-show="curPage=='mypage'"></mypage>
 		<!-- 占位符 -->
 		<view style="height: 95rpx;"></view>
 		<!-- 底部导航栏95rpx -->
 		<adTabbar backgroundColor="#1d1d1d">
-			<adTabbarItem text="首页" :textColor="curPage=='home'?'#e4e4e4':'#5d5d5d'" dataCur="home" class="maxWidth" @tap="navClick"
+			<adTabbarItem text="首页" :textColor="curPage=='home'?'#e4e4e4':'#5d5d5d'" dataCur="home" class="maxWidth" @click="navClick"
 			 :icon="curPage=='home'?'/static/tabbar/indexed.png':'/static/tabbar/index.png'"></adTabbarItem>
-			<adTabbarItem text="串烧音乐" :textColor="curPage=='music'?'#e4e4e4':'#5d5d5d'" dataCur="music" class="maxWidth" @tap="navClick"
+			<adTabbarItem text="串烧音乐" :textColor="curPage=='music'?'#e4e4e4':'#5d5d5d'" dataCur="music" class="maxWidth" @click="navClick"
 			 :icon="curPage=='music'?'/static/tabbar/musiced.png':'/static/tabbar/music.png'"></adTabbarItem>
-			<adTabbarItem text="我的" :textColor="curPage=='mypage'?'#e4e4e4':'#5d5d5d'" dataCur="mypage" class="maxWidth" @tap="navClick"
+			<adTabbarItem text="我的" :textColor="curPage=='mypage'?'#e4e4e4':'#5d5d5d'" dataCur="mypage" class="maxWidth" @click="navClick"
 			 :icon="curPage=='mypage'?'/static/tabbar/myed.png':'/static/tabbar/my.png'"></adTabbarItem>
 		</adTabbar>
 	</view>
@@ -69,6 +69,7 @@
 		mapMutations,
 		mapState
 	} from "vuex";
+	let timer;
 	export default {
 		components: {
 			uniIcons,
@@ -90,18 +91,21 @@
 			...mapGetters(['getPopState', 'getPlaying', 'getPlayMode']),
 			...mapState(['userInfo', 'hasLogin', 'Audio', 'Music']),
 		},
+		onShow() {
+			timer = setInterval(() => {
+				//console.log("首页进度监听")
+				this.progressNum = (this.Audio.currentTime / this.Audio.duration) * 100;
+			}, 500)
+		},
+		onHide() {
+			clearInterval(timer); //清除定时器
+		},
 		onLoad() {
+
 			//监听网络
 			this.$U.onNetWork();
 			//首先检查登录状态
 			this.checkLogin();
-			//音乐资源加载后自动播放
-			this.Audio.autoplay = true;
-			//监听音乐播放进度变化  不需要卸载 主页面
-			this.Audio.onTimeUpdate(() => {
-				//console.log("音乐弹出层监听:" + this.Audio.currentTime);
-				this.progressNum = (this.Audio.currentTime / this.Audio.duration) * 100;
-			})
 			this.Audio.onEnded(() => {
 				//登录状态检查
 				if (!this.hasLogin) {
@@ -130,7 +134,7 @@
 						musicIndex = this.$store.state.MusicLocalIndex + 1
 						this.setMusicLocalIndex(musicIndex);
 					}
-					console.log(musicIndex);
+					console.log("下一首索引："+musicIndex);
 					this.setMusic(service.getPlayListMusic(musicIndex))
 					console.log(this.Music);
 					this.Audio.src = this.Music.src;

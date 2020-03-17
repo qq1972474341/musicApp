@@ -18,7 +18,7 @@
 			<view style="height: 200rpx;"></view> <!-- 占位符 -->
 			<!-- 文字滚动 -->
 			<view class="m-2 rounded">
-				<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF" :scrollable="!pause"
+				<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF" :scrollable="playing"
 				 :speed="30" single="true" :text="Music.name+'        '+Music.author"></uni-notice-bar>
 			</view>
 
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-	//const Audio = uni.createInnerAudioContext(); //创建一个音频对象
 	import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue';
 	import service from '@/service.js';
 	import $T from '@/common/time.js';
@@ -61,6 +60,7 @@
 		mapMutations,
 		mapState
 	} from "vuex";
+	let timer;
 	export default {
 		components: {
 			uniNoticeBar
@@ -68,14 +68,14 @@
 		data() {
 			return {
 				music: {
-					max: 200, //播放总时长
+					max: 0, //播放总时长
 					played: 0, //已播放时长
 				}
 			}
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['Audio', 'Music', 'hasLogin']),
+			...mapState(['Audio', 'Music', 'hasLogin', 'playing']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
@@ -84,7 +84,6 @@
 			}
 		},
 		onLoad(e) {
-			console.log("登录状态：" + this.hasLogin);
 			//播放音乐登录检查
 			if (!this.hasLogin) {
 				this.Audio.stop();
@@ -100,11 +99,8 @@
 			let that = this; //传递自身this
 			uni.getNetworkType({
 				success: function(res) {
-					//console.log(res.networkType);
-					//console.log(service.getSetting().onlyUseWifi);
-					if (res.networkType !== "wifi" && service.getSetting().onlyUseWifi || res.networkType !== "wifi" && service.getSetting()
-						.onlyUseWifi ===
-						undefined) {
+					if (res.networkType !== "wifi" && res.networkType !== 'none' && service.getSetting().onlyUseWifi || res.networkType !==
+						"wifi" && service.getSetting().onlyUseWifi === undefined && res.networkType !== 'none') {
 						console.log("当前非wifi状态 使用流量播放");
 						uni.showModal({
 							title: '提示',
@@ -132,27 +128,22 @@
 				console.log("音乐页面");
 				//添加到播放列表
 				service.addPlayList(this.Music);
-				//初始化音频对象数据
-				// if (this.Audio.src !== this.Music.src) {
-				// 	this.Audio.destroy();
-				// }
-				this.Audio.src = this.Music.src;
 				console.log('开始播放');
+				if(this.Audio.src === this.Music.src) return; //源曲相同不重置状态
+				this.Audio.src = this.Music.src;
+				//设置播放开关
 				this.setPlaying(true); //置播放状态 为 true
-				// this.Audio.onPlay(() => {
-				// 	console.log('开始播放');
-				// 	this.setPlaying(true); //置播放状态 为 true
-				// });
 			}
-			//暂停状态下置
-			this.music.max = this.Audio.duration; //音乐总时长
-			this.music.played = this.Audio.currentTime;
-			//监听音乐播放进度变化
-			this.Audio.onTimeUpdate(this.onTimeUpdate);
+			//设置播放进度监听
+			timer = setInterval(() => {
+				//console.log("音乐播放页监听");
+				this.music.max = this.Audio.duration; //音乐总时长
+				this.music.played = this.Audio.currentTime;
+			}, 500)
 		},
 		onUnload() {
 			console.log("播放页面卸载");
-			this.Audio.offTimeUpdate(this.onTimeUpdate); //卸载监听事件
+			clearInterval(timer);
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'setMusic']),
@@ -162,12 +153,12 @@
 				})
 			},
 			//音乐方波进度变化事件
-			onTimeUpdate() {
-				//this.$mp.page.$getAppWebview().id 
-				//console.log("音乐播放页:" + this.Audio.currentTime);
-				this.music.max = this.Audio.duration; //音乐总时长
-				this.music.played = this.Audio.currentTime;
-			},
+			// onTimeUpdate() {
+			// 	//this.$mp.page.$getAppWebview().id 
+			// 	//console.log("音乐播放页:" + this.Audio.currentTime);
+			// 	this.music.max = this.Audio.duration; //音乐总时长
+			// 	this.music.played = this.Audio.currentTime;
+			// },
 			//拖动中播放进度条变化
 			sliderChanging(e) {
 				this.music.played = e.detail.value;

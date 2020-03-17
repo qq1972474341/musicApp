@@ -1,6 +1,6 @@
 export default {
-	// 监听网络
 	onNetWork() {
+		console.log("监听网络")
 		let func = (res) => {
 			if (res.networkType === 'none') {
 				uni.showToast({

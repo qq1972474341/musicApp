@@ -41,7 +41,6 @@
 			}
 		},
 		onLoad() {
-			console.log(JSON.stringify(service.getPlayList()));
 			this.list = service.getPlayList();
 		},
 		methods: {

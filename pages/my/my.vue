@@ -71,6 +71,9 @@
 				return value > 1024 ? (value / 1024).toFixed(2) + 'MB' : value.toFixed(2) + 'KB';
 			}
 		},
+		created() {
+			this.getStorageInfo();
+		},
 		methods: {
 			...mapMutations(['login', 'logout']),
 			//跳转页面
@@ -146,8 +149,9 @@
 				});
 			},
 			//获取当前缓存
-			getStorageInfo(){
-				let res = uni.getStorageInfoSync()
+			getStorageInfo() {
+				let res = uni.getStorageInfoSync();
+				//console.log(res);
 				this.cache = res.currentSize
 			},
 			// 清除缓存
