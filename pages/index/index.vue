@@ -11,9 +11,9 @@
 				<uni-icons class="input-uni-icon" type="search" size="22" color="#666666" />
 				<input confirm-type="search" class="nav-bar-input" type="text" placeholder="输入搜索关键词" disabled>
 			</view>
-			<view slot="right" @tap="openMessage">
+			<view slot="right" @tap="openMessage" class="position-absolute">
 				<uni-icons type="chat" color="#fff" size="24"></uni-icons>
-				<view class="position-absolute" style="top: 30rpx;right:30rpx;z-index: 99999;">
+				<view class="position-relative" style="z-index: 99999;display: inline;top: -30rpx;left: -20rpx;">
 					<uni-badge text="2" type="error"></uni-badge>
 				</view>
 			</view>
@@ -24,7 +24,7 @@
 				<image :src="Music.img" style="width: 190rpx;height: 110rpx;" @tap="openPlaying" mode="aspectFill"></image>
 				<view class="flex-1 flex align-center" style="background-color: #1d1d1d;" @tap="openPlaying">
 					<view class="flex flex-column ml-3" style="width: 360rpx;">
-						<text class="text-white font font-weight-bold">{{Music.name}}</text>
+						<text class="text-white font font-weight-bold">{{Music.title}}</text>
 						<text class="text-light-muted font font-weight-bold">{{Music.author}}</text>
 					</view>
 					<view class="flex flex-1 ml-1">
@@ -101,7 +101,23 @@
 			clearInterval(timer); //清除定时器
 		},
 		onLoad() {
+			uni.$on('playCheck', () => {
+				if (!this.hasLogin) {
+					setTimeout(() => {
+						this.Audio.stop();
+					}, 500)  //留部分延迟才能停止
+					this.$store.commit("setPopState", false); //关闭音乐弹出层
+					//this.setMusic(undefined);
+					plus.nativeUI.alert('请先登录后听音乐', () => {
+						uni.navigateBack({
+							delta: 1
+						})
 
+					});
+
+					return;
+				}
+			});
 			//监听网络
 			this.$U.onNetWork();
 			//首先检查登录状态
@@ -134,10 +150,15 @@
 						musicIndex = this.$store.state.MusicLocalIndex + 1
 						this.setMusicLocalIndex(musicIndex);
 					}
-					console.log("下一首索引："+musicIndex);
+					console.log("下一首索引：" + musicIndex);
 					this.setMusic(service.getPlayListMusic(musicIndex))
-					console.log(this.Music);
+
+					//置音频资源
 					this.Audio.src = this.Music.src;
+					//置音频标题
+					this.Audio.title = this.Music.title;
+					//置音频封面图
+					this.Audio.coverImgUrl = this.Music.img;
 				} else {
 					console.log("自由播放模式");
 				}

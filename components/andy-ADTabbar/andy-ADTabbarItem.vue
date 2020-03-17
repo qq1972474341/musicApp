@@ -1,5 +1,5 @@
 <template>
-	<view class="tabItem" @click="onClick" :data-cur="dataCur" hover-class="animated bounceIn">
+	<view class="tabItem" @click="onClick" :data-cur="dataCur">
 		<image class="tabIcon" :src="icon"></image>
 		<view :style="{color: textColor, fontSize: textSize + 'rpx'}">{{text}}</view>
 	</view>

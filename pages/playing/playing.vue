@@ -19,7 +19,7 @@
 			<!-- 文字滚动 -->
 			<view class="m-2 rounded">
 				<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF" :scrollable="playing"
-				 :speed="30" single="true" :text="Music.name+'        '+Music.author"></uni-notice-bar>
+				 :speed="30" single="true" :text="Music.title+'        '+Music.author"></uni-notice-bar>
 			</view>
 
 			<view class="flex justify-center flex-column">
@@ -84,18 +84,6 @@
 			}
 		},
 		onLoad(e) {
-			//播放音乐登录检查
-			if (!this.hasLogin) {
-				this.Audio.stop();
-				this.$store.commit("setPopState", false); //关闭音乐弹出层
-				//this.setMusic(undefined);
-				plus.nativeUI.alert('请先登录后听音乐', () => {
-					uni.navigateBack({
-						delta: 1
-					})
-				});
-				return;
-			}
 			let that = this; //传递自身this
 			uni.getNetworkType({
 				success: function(res) {
@@ -124,15 +112,18 @@
 				},
 			});
 			this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
-			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined) {
+			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined && this.Audio.src !== this.Music.src) {
 				console.log("音乐页面");
 				//添加到播放列表
 				service.addPlayList(this.Music);
 				console.log('开始播放');
-				if(this.Audio.src === this.Music.src) return; //源曲相同不重置状态
-				this.Audio.src = this.Music.src;
-				//设置播放开关
 				this.setPlaying(true); //置播放状态 为 true
+				//置音频资源
+				this.Audio.src = this.Music.src;
+				//置音频标题
+				this.Audio.title = this.Music.title;
+				//置音频封面图
+				this.Audio.coverImgUrl = this.Music.img;
 			}
 			//设置播放进度监听
 			timer = setInterval(() => {
@@ -140,6 +131,8 @@
 				this.music.max = this.Audio.duration; //音乐总时长
 				this.music.played = this.Audio.currentTime;
 			}, 500)
+			//播放音乐登录检查
+			uni.$emit('playCheck');
 		},
 		onUnload() {
 			console.log("播放页面卸载");

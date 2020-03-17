@@ -15,7 +15,7 @@
 					</view>
 				</view>
 			</block>
-			<view class="mb-2" style="margin-top: -50rpx;">
+			<view class="mb-2">
 				<uni-load-more :status="loadState" :contentText="loadText"></uni-load-more>
 			</view>
 		</scroll-view>

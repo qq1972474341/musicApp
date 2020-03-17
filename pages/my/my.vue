@@ -158,7 +158,7 @@
 			clear() {
 				uni.showModal({
 					title: '提示',
-					content: '是否要清除所有缓存？',
+					content: '是否要清除所有缓存？\n注意登录信息也将被清除!',
 					cancelText: '不清除',
 					confirmText: '清除',
 					success: res => {

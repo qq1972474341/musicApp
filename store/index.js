@@ -37,6 +37,8 @@ const store = new Vuex.Store({
 		},
 		//更改音乐弹出层显示状态
 		setPopState(state, bool) {
+			//setPopState
+			console.log("关闭音乐弹出层"+bool);
 			state.popState = bool;
 		},
 		//更改音乐播放状态
@@ -67,7 +69,7 @@ const store = new Vuex.Store({
 		},
 		//获取播放状态
 		getPlaying(state) {
-			console.log("播放状态:" + state.playing);
+			//console.log("播放状态:" + state.playing);
 			return state.playing;
 		},
 		//获取播放模式

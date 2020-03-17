@@ -42,6 +42,7 @@
 		},
 		onLoad() {
 			this.list = service.getPlayList();
+			console.log(this.list);
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setMusic', 'setPlayMode', 'setMusicLocalIndex']),

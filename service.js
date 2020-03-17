@@ -75,7 +75,7 @@ export default {
 		};
 		//过滤重复
 		let tmp = list.find((oitem) => {
-			return oitem.name === item.name;
+			return oitem.title === item.title; //根据歌曲名查找过滤
 		});
 		if (tmp === undefined) {
 			console.log("播放列表添加新数据");
