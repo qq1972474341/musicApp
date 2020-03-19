@@ -31,6 +31,10 @@
 				</view>
 				<text class="text-white font-sm mr-1">{{cache|format}}</text>
 			</view>
+			<view v-show="this.hasLogin" class="flex align-center" hover-class="bg-hover-secondary" @tap="uploadMusic">
+				<text class="iconfont p-2 text-light-muted font-lg iconshangchuan"></text>
+				<text class="text-white font-sm">上传音乐</text>
+			</view>
 			<view v-show="this.hasLogin" class="flex align-center" hover-class="bg-hover-secondary" @tap="switchAccount">
 				<text class="iconfont p-2 text-light-muted font-lg iconqiehuanzhanghao"></text>
 				<text class="text-white font-sm">切换账号</text>
@@ -58,7 +62,7 @@
 					},
 					{
 						name: "设置",
-						icon: "iconsetting",
+						icon: "iconshezhi",
 						url: "../set/set",
 						show: true
 					}
