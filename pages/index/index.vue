@@ -101,11 +101,17 @@
 			clearInterval(timer); //清除定时器
 		},
 		onLoad() {
+			try {
+				const res = uni.getSystemInfoSync();
+				console.log(res.platform); //获取平台 IOS/Android
+			} catch (e) {
+				// error
+			}
 			uni.$on('playCheck', () => {
 				if (!this.hasLogin) {
 					setTimeout(() => {
 						this.Audio.stop();
-					}, 500)  //留部分延迟才能停止
+					}, 500) //留部分延迟才能停止
 					this.$store.commit("setPopState", false); //关闭音乐弹出层
 					//this.setMusic(undefined);
 					plus.nativeUI.alert('请先登录后听音乐', () => {
