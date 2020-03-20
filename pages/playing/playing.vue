@@ -3,51 +3,61 @@
 		<view class="status_bar">
 			<!-- 这里是状态栏 -->
 		</view>
-		#
-		<!-- #ifdef APP-PLUS -->
 
-		<!-- #endif -->
-		<view class="ml-3 mt-2" hover-class="animated jello" @tap="back">
+		<view class="ml-3 mt-2 position-fixed" hover-class="animated jello" @tap="back">
 			<text class="text-white iconfont iconfanhui-copy-copy font-lg font-weight-bold"></text>
 		</view>
-		<view class="mt-5">
-			<!-- 显示图片 -->
-			<image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
+		<view class="flex justify-center align-center mt-3 w-100" style="height: 100rpx;">
+			<view class="text-white border rounded-circle px-2 mx-1 flex align-center" style="height: 80rpx;" @tap="chageTab(0)">音乐</view>
+			<view class="text-white border rounded-circle px-2 mx-1 flex align-center" style="height: 80rpx;" @tap="chageTab(1)">歌词</view>
 		</view>
-		<view class="fixed-bottom" style="background-color: #131313;height: 740rpx;width: 750rpx;">
-			<view style="height: 200rpx;"></view> <!-- 占位符 -->
-			<!-- 文字滚动 -->
-			<view class="m-2 rounded">
-				<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF" :scrollable="playing"
-				 :speed="30" single="true" :text="Music.title+'        '+Music.author"></uni-notice-bar>
-			</view>
+		<swiper class="swiper" :duration="300" :current="tabIndex" :style="{height: scrollH+'px'}">
+			<swiper-item>
+				<view>
+					<view class="mt-2">
+						<!-- 显示图片 -->
+						<image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
+					</view>
+					<view class="fixed-bottom" style="background-color: #131313;height: 740rpx;width: 750rpx;">
+						<view style="height: 100rpx;"></view> <!-- 占位符 -->
+						<!-- 文字滚动 -->
+						<view class="m-2 rounded">
+							<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF"
+							 :scrollable="playing" :speed="30" single="true" :text="Music.title+'        '+Music.author"></uni-notice-bar>
+						</view>
+						<view class="flex justify-center flex-column">
+							<!-- 播放滑动条 -->
+							<slider backgroundColor="#434343" :max="music.max" :value="music.played" block-size="12" activeColor="#FFFFFF"
+							 style="width: 660rpx;" @changing="sliderChanging" @change="sliderChanged"></slider>
+							<view class="flex justify-between px-5" style="margin-top: -10px;">
+								<text class="text-light-muted font-sm">{{formatTime1}}</text>
+								<text class="text-light-muted font-sm">{{formatTime2}}</text>
+							</view>
+							<view style="height: 50rpx;"></view> <!-- 占位符 -->
 
-			<view class="flex justify-center flex-column">
-				<!-- 播放滑动条 -->
-				<slider backgroundColor="#434343" :max="music.max" :value="music.played" block-size="12" activeColor="#FFFFFF"
-				 style="width: 660rpx;" @changing="sliderChanging" @change="sliderChanged"></slider>
-				<view class="flex justify-between px-5" style="margin-top: -10px;">
-					<text class="text-light-muted font-sm">{{formatTime1}}</text>
-					<text class="text-light-muted font-sm">{{formatTime2}}</text>
+							<!-- 播放按钮等 -->
+							<view class="flex flex-row align-center justify-center">
+								<!-- 下载-->
+								<view class="text-white font-lger iconfont iconxiazai mx-4" hover-class="animated pulse" @tap="downMusic"></view>
+								<!-- 上一首-->
+								<view class="text-white font-lger iconfont iconziyuanldpi8 mx-4" hover-class="animated pulse"></view>
+								<!-- 播放 -->
+								<view @tap="changeState" class="text-white iconfont mx-4" style="font-size: 70rpx;" hover-class="animated pulse"
+								 :class="getPlaying ? 'iconzantingtingzhi':'iconziyuanldpi11'"></view>
+								<!-- 下一首 -->
+								<view class="text-white font-lger iconfont iconziyuanldpi9  mx-4" hover-class="animated pulse"></view>
+								<!-- 分享 -->
+								<view class="text-white font-lger iconfont iconfenxiang mx-4" hover-class="animated pulse" @tap="share"></view>
+							</view>
+						</view>
+					</view>
 				</view>
-				<view style="height: 100rpx;"></view> <!-- 占位符 -->
+			</swiper-item>
+			<swiper-item>
+				<view class="swiper-item uni-bg-green">B</view>
+			</swiper-item>
+		</swiper>
 
-				<!-- 播放按钮等 -->
-				<view class="flex flex-row align-center justify-center">
-					<!-- 下载-->
-					<view class="text-white font-lger iconfont iconxiazai mx-4" hover-class="animated pulse" @tap="downMusic"></view>
-					<!-- 上一首-->
-					<view class="text-white font-lger iconfont iconziyuanldpi8 mx-4" hover-class="animated pulse"></view>
-					<!-- 播放 -->
-					<view @tap="changeState" class="text-white iconfont mx-4" style="font-size: 70rpx;" hover-class="animated pulse"
-					 :class="getPlaying ? 'iconzantingtingzhi':'iconziyuanldpi11'"></view>
-					<!-- 下一首 -->
-					<view class="text-white font-lger iconfont iconziyuanldpi9  mx-4" hover-class="animated pulse"></view>
-					<!-- 分享 -->
-					<view class="text-white font-lger iconfont iconfenxiang mx-4" hover-class="animated pulse" @tap="share"></view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -67,6 +77,8 @@
 		},
 		data() {
 			return {
+				scrollH: 500,
+				tabIndex: 0,
 				music: {
 					max: 0, //播放总时长
 					played: 0, //已播放时长
@@ -84,6 +96,17 @@
 			}
 		},
 		onLoad(e) {
+			//初始化高度
+			uni.getSystemInfo({
+				success: res => {
+					console.log(res);
+					this.scrollH = res.windowHeight - res.statusBarHeight;
+					// #ifdef MP
+					this.scrollH -= 44
+					// #endif
+				}
+			})
+
 			let that = this; //传递自身this
 			uni.getNetworkType({
 				success: function(res) {
@@ -140,6 +163,11 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'setMusic']),
+			//更改tab面板
+			chageTab(index) {
+				this.tabIndex = index;
+			},
+			//返回上一个页面
 			back() {
 				uni.navigateBack({
 					delta: 1

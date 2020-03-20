@@ -80,6 +80,7 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logout']),
+			uploadMusic() {},
 			//跳转页面
 			open(e) {
 				uni.navigateTo({
