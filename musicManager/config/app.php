@@ -15,13 +15,13 @@
 
 return [
     // 应用名称
-    'app_name'               => '社区交友',
+    'app_name'               => '挑给你音乐',
     // 应用地址
     'app_host'               => '',
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
-    'app_trace'              => true,
+    'app_trace'              => false,
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -97,11 +97,11 @@ return [
     // 是否开启路由延迟解析
     'url_lazy_route'         => false,
     // 是否强制使用路由
-    'url_route_must'         => false,
+    'url_route_must'         => true,
     // 合并路由规则
     'route_rule_merge'       => false,
     // 路由是否完全匹配
-    'route_complete_match'   => false,
+    'route_complete_match'   => true,
     // 使用注解路由
     'route_annotation'       => false,
     // 域名根，如thinkphp.cn
@@ -141,6 +141,6 @@ return [
     // 显示错误信息
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
-    'exception_handle'       => '',
+    'exception_handle'       => 'app\lib\exception\ExceptionHandler',
 
 ];
