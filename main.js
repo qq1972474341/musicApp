@@ -9,6 +9,7 @@ Vue.prototype.$store = store
 //工具类
 import util from './common/Util.js'
 Vue.prototype.$U = util;
+
 const app = new Vue({
 	store,
 	...App

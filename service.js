@@ -6,7 +6,10 @@ const PLAY_LIST = 'PLAY_LIST';
 const SETTING = 'SETTING';
 //搜索历史
 const SEARCH_HISTORY = 'SEARCH_HISTORY';
+//后台域名
+const DOMAIN = "http://music.darkwing.top/";
 export default {
+	DOMAIN,
 	//获取用户缓存数据
 	getUser() {
 		return uni.getStorageSync(USERS_KEY);

@@ -13,5 +13,6 @@ export default {
 			success: func
 		});
 		uni.onNetworkStatusChange(func);
-	}
+	},
+	
 }

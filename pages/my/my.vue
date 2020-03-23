@@ -14,7 +14,7 @@
 				</view>
 			</view>
 			<view v-show="hasLogin" class="m-2">
-				<text class="text-white font-sm">听歌点数：15</text>
+				<text class="text-white font-sm">听歌点数：{{userInfo.playNum}}</text>
 			</view>
 		</view>
 		<view>
@@ -48,6 +48,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex';
+	import service from '@/service.js';
 	export default {
 		computed: {
 			...mapState(['hasLogin', 'userInfo', 'Audio'])
@@ -117,7 +118,27 @@
 									 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
 									 */
 									//console.log(infoRes);
-									this.login(infoRes.userInfo);
+									uni.request({
+										url: service.DOMAIN + "api/v1/user/login",
+										method: 'POST',
+										data: {
+											openid: infoRes.userInfo.openId,
+											avatarUrl: infoRes.userInfo.avatarUrl
+										},
+										success: res => {
+											//console.log(res);
+											if (res.statusCode === 200) {
+												infoRes.userInfo.playNum = res.data.data.playNum;
+												this.login(infoRes.userInfo);
+											}
+
+										},
+										fail: () => {
+											console.log("登录失败");
+										},
+										complete: () => {}
+									});
+
 								},
 								fail() {
 									uni.showToast({

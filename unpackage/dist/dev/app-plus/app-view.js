@@ -3308,7 +3308,7 @@ var render = function() {
               _c(
                 "v-uni-text",
                 { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
-                [_vm._v("听歌点数：15")]
+                [_vm._v("听歌点数：" + _vm._$g(11, "t0-0"))]
               )
             ],
             1
