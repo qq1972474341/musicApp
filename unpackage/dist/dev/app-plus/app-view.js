@@ -3734,7 +3734,8 @@ var render = function() {
             "v-uni-view",
             {
               staticClass: _vm._$g(5, "sc"),
-              staticStyle: { height: "80rpx" },
+              class: _vm._$g(5, "c"),
+              staticStyle: { height: "70rpx" },
               attrs: { _i: 5 },
               on: {
                 click: function($event) {
@@ -3748,7 +3749,8 @@ var render = function() {
             "v-uni-view",
             {
               staticClass: _vm._$g(6, "sc"),
-              staticStyle: { height: "80rpx" },
+              class: _vm._$g(6, "c"),
+              staticStyle: { height: "70rpx" },
               attrs: { _i: 6 },
               on: {
                 click: function($event) {
@@ -3766,7 +3768,12 @@ var render = function() {
         {
           staticClass: _vm._$g(7, "sc"),
           style: _vm._$g(7, "s"),
-          attrs: { duration: 300, current: _vm._$g(7, "a-current"), _i: 7 }
+          attrs: { duration: 300, current: _vm._$g(7, "a-current"), _i: 7 },
+          on: {
+            change: function($event) {
+              return _vm.$handleViewEvent($event)
+            }
+          }
         },
         [
           _c(

@@ -51,6 +51,22 @@
                     }
                 }
             }
+        },
+        "nativePlugins" : {
+            "Html5app-Music" : {
+                "__plugin_info__" : {
+                    "name" : "Html5app-Music",
+                    "description" : "Android 通知栏音乐控制插件",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            }
         }
     },
     "quickapp" : {},

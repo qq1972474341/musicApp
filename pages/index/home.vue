@@ -19,7 +19,7 @@
 <script>
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	import {
-		mapMutations
+		mapMutations,mapState
 	} from "vuex";
 	let demo = [{
 			img: "/static/demo/demo1.jpg",
@@ -124,10 +124,20 @@
 		onReachBottom() {
 			console.log("到底部")
 		},
+		computed:{
+			...mapState(['hasLogin'])
+		},
 		methods: {
 			...mapMutations(['setMusic']),
 			//选择音乐
 			selectMusic(index) {
+				// console.log("登录状态：" + this.hasLogin);
+				// //播放音乐登录检查
+				// if (!this.hasLogin) {
+				// 	plus.nativeUI.alert('请先登录后听音乐');
+				// 	return;
+				// }
+			
 				this.setMusic(this.list_home[index]);
 				uni.navigateTo({
 					url: "../playing/playing"

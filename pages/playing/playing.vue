@@ -8,10 +8,12 @@
 			<text class="text-white iconfont iconfanhui-copy-copy font-lg font-weight-bold"></text>
 		</view>
 		<view class="flex justify-center align-center mt-3 w-100" style="height: 100rpx;">
-			<view class="text-white border rounded-circle px-2 mx-1 flex align-center" style="height: 80rpx;" @tap="chageTab(0)">音乐</view>
-			<view class="text-white border rounded-circle px-2 mx-1 flex align-center" style="height: 80rpx;" @tap="chageTab(1)">歌词</view>
+			<view class="rounded-circle px-2 mx-1 flex align-center" :class="tabIndex===0?'text-white border':'text-light-muted'"
+			 style="height: 70rpx;" @tap="chageTab(0)">音乐</view>
+			<view class="rounded-circle px-2 mx-1 flex align-center" :class="tabIndex===1?'text-white border':'text-light-muted'"
+			 style="height: 70rpx;" @tap="chageTab(1)">歌词</view>
 		</view>
-		<swiper class="swiper" :duration="300" :current="tabIndex" :style="{height: scrollH+'px'}">
+		<swiper class="swiper" :duration="300" :current="tabIndex" :style="{height: scrollH+'px'}" @change="onChangeTab">
 			<swiper-item>
 				<view>
 					<view class="mt-2">
@@ -70,6 +72,7 @@
 		mapMutations,
 		mapState
 	} from "vuex";
+
 	let timer;
 	export default {
 		components: {
@@ -87,7 +90,7 @@
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['Audio', 'Music', 'hasLogin', 'playing']),
+			...mapState(['Audio', 'Music', 'hasLogin', 'playing', 'MusicNotice']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
@@ -108,6 +111,7 @@
 			})
 
 			let that = this; //传递自身this
+			//检查网络
 			uni.getNetworkType({
 				success: function(res) {
 					if (res.networkType !== "wifi" && res.networkType !== 'none' && service.getSetting().onlyUseWifi || res.networkType !==
@@ -147,6 +151,37 @@
 				this.Audio.title = this.Music.title;
 				//置音频封面图
 				this.Audio.coverImgUrl = this.Music.img;
+
+				//显示安卓音乐通知栏
+				if (this.$store.state.platform === "Aandroid") {
+					this.MusicNotice.show({
+						"title": this.Music.title,
+						"image": this.Music.img,
+						"next": true,
+						"last": true
+					}, data => {
+						//监听控制条按键点击事件
+						switch (data.type) {
+							case "play":
+								console.log("用户点击通知栏的播放键");
+								break;
+							case "next":
+								console.log("用户点击通知栏的下一首键")
+								break;
+							case "last":
+								console.log("用户点击通知栏的上一首键")
+								break;
+							case "close":
+								console.log("用户点击通知栏的关闭键")
+								break;
+
+							default:
+								break;
+						}
+
+					});
+				}
+
 			}
 			//设置播放进度监听
 			timer = setInterval(() => {
@@ -163,6 +198,10 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'setMusic']),
+			//swiper滑动事件
+			onChangeTab(e) {
+				this.tabIndex = e.detail.current;
+			},
 			//更改tab面板
 			chageTab(index) {
 				this.tabIndex = index;

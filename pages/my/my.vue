@@ -77,7 +77,8 @@
 			}
 		},
 		created() {
-			this.getStorageInfo();
+			//this.getStorageInfo();
+
 		},
 		methods: {
 			...mapMutations(['login', 'logout']),
@@ -126,7 +127,7 @@
 											avatarUrl: infoRes.userInfo.avatarUrl
 										},
 										success: res => {
-											//console.log(res);
+											console.log("登录成功");
 											if (res.statusCode === 200) {
 												infoRes.userInfo.playNum = res.data.data.playNum;
 												this.login(infoRes.userInfo);

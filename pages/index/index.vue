@@ -104,6 +104,7 @@
 			try {
 				const res = uni.getSystemInfoSync();
 				console.log(res.platform); //获取平台 IOS/Android
+				this.setPlatform(res.platform);
 			} catch (e) {
 				// error
 			}
@@ -120,7 +121,6 @@
 						})
 
 					});
-
 					return;
 				}
 			});
@@ -171,7 +171,7 @@
 			})
 		},
 		methods: {
-			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic']),
+			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic', 'setPlatform']),
 			//打开消息页面
 			openMessage() {
 				uni.navigateTo({
