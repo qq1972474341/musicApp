@@ -110,12 +110,14 @@
 			}
 			uni.$on('playCheck', () => {
 				if (!this.hasLogin) {
+					//试听检测
+					if (service.checkNoneLoginPlay()) return;
 					setTimeout(() => {
 						this.Audio.stop();
 					}, 500) //留部分延迟才能停止
 					this.$store.commit("setPopState", false); //关闭音乐弹出层
 					//this.setMusic(undefined);
-					plus.nativeUI.alert('请先登录后听音乐', () => {
+					plus.nativeUI.alert('已试听10次,请先登录后听音乐', () => {
 						uni.navigateBack({
 							delta: 1
 						})

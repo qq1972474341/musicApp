@@ -90,7 +90,7 @@
 		},
 		computed: {
 			...mapGetters(['getPopState', 'getPlaying']),
-			...mapState(['Audio', 'Music', 'hasLogin', 'playing', 'MusicNotice']),
+			...mapState(['Audio', 'Music', 'hasLogin', 'playing']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
@@ -140,6 +140,8 @@
 			});
 			this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
 			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined && this.Audio.src !== this.Music.src) {
+				//播放音乐登录检查
+				uni.$emit('playCheck');
 				console.log("音乐页面");
 				//添加到播放列表
 				service.addPlayList(this.Music);
@@ -152,36 +154,6 @@
 				//置音频封面图
 				this.Audio.coverImgUrl = this.Music.img;
 
-				//显示安卓音乐通知栏
-				if (this.$store.state.platform === "Aandroid") {
-					this.MusicNotice.show({
-						"title": this.Music.title,
-						"image": this.Music.img,
-						"next": true,
-						"last": true
-					}, data => {
-						//监听控制条按键点击事件
-						switch (data.type) {
-							case "play":
-								console.log("用户点击通知栏的播放键");
-								break;
-							case "next":
-								console.log("用户点击通知栏的下一首键")
-								break;
-							case "last":
-								console.log("用户点击通知栏的上一首键")
-								break;
-							case "close":
-								console.log("用户点击通知栏的关闭键")
-								break;
-
-							default:
-								break;
-						}
-
-					});
-				}
-
 			}
 			//设置播放进度监听
 			timer = setInterval(() => {
@@ -189,8 +161,7 @@
 				this.music.max = this.Audio.duration; //音乐总时长
 				this.music.played = this.Audio.currentTime;
 			}, 500)
-			//播放音乐登录检查
-			uni.$emit('playCheck');
+			
 		},
 		onUnload() {
 			console.log("播放页面卸载");

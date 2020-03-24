@@ -3,8 +3,6 @@ import Vuex from 'vuex'
 //状态管理器
 Vue.use(Vuex)
 import service from '@/service.js';
-//引入通知栏音乐播放插件
-const Music_Notice = uni.requireNativePlugin('Html5app-Music');
 const store = new Vuex.Store({
 	state: {
 		//平台 ios或android
@@ -20,7 +18,6 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		userInfo: {},
 		Audio: uni.getBackgroundAudioManager(), //获取全局唯一的背景音频管理器
-		MusicNotic: Music_Notice, //引入通知栏对象
 		Music: {}, //存储一个音乐对象
 		MusicLocalIndex: 0, //音乐播放本地标记索引
 		playMode: "",

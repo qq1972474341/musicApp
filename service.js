@@ -1,3 +1,5 @@
+//首次启动
+const FIRST='FIRST';
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 //播放列表
@@ -6,6 +8,8 @@ const PLAY_LIST = 'PLAY_LIST';
 const SETTING = 'SETTING';
 //搜索历史
 const SEARCH_HISTORY = 'SEARCH_HISTORY';
+//未登陆试听次数
+const NONE_LOGIN_PLAY = 'NONE_LOGIN_PLAY';
 //后台域名
 const DOMAIN = "http://music.darkwing.top/";
 export default {
@@ -121,5 +125,22 @@ export default {
 	//获取用户习惯设置
 	getSetting() {
 		return uni.getStorageSync(SETTING);
+	},
+	//未登陆播放次数 检测
+	checkNoneLoginPlay() {
+		//uni.removeStorageSync(NONE_LOGIN_PLAY);
+		let res = uni.getStorageSync(NONE_LOGIN_PLAY);
+		console.log("播放次数:" + res);
+		console.log(typeof(res));
+		if (res==='') {
+			console.log('首次试听');
+			uni.setStorageSync(NONE_LOGIN_PLAY, 9); //减去一次
+			return true;
+		} else if (res > 0) {
+			uni.setStorageSync(NONE_LOGIN_PLAY, res - 1);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
