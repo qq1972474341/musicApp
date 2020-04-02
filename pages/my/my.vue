@@ -118,21 +118,22 @@
 									 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
 									 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
 									 */
-									//console.log(infoRes);
+									console.log(service.DOMAIN + "api/v1/user/login");
 									uni.request({
 										url: service.DOMAIN + "api/v1/user/login",
 										method: 'POST',
 										data: {
 											openid: infoRes.userInfo.openId,
-											avatarUrl: infoRes.userInfo.avatarUrl
+											avatarUrl: infoRes.userInfo.avatarUrl,
+											nickName:infoRes.userInfo.nickName
 										},
 										success: res => {
 											console.log("登录成功");
-											if (res.statusCode === 200) {
+											if (res.data.code === 200) {
 												infoRes.userInfo.playNum = res.data.data.playNum;
+												console.log(infoRes.userInfo);
 												this.login(infoRes.userInfo);
 											}
-
 										},
 										fail: () => {
 											console.log("登录失败");

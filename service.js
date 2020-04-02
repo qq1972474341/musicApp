@@ -12,7 +12,7 @@ const SEARCH_HISTORY = 'SEARCH_HISTORY';
 const NONE_LOGIN_PLAY = 'NONE_LOGIN_PLAY';
 
 export default {
-	DOMAIN: "http://127.0.0.1/",
+	DOMAIN: "http://music.darkwing.top/",
 	//获取用户缓存数据
 	getUser() {
 		return uni.getStorageSync(USERS_KEY);

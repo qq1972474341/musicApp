@@ -109,6 +109,7 @@
 				// error
 			}
 			uni.$on('playCheck', () => {
+				//用户未登陆
 				if (!this.hasLogin) {
 					//试听检测
 					if (service.checkNoneLoginPlay()) return;
@@ -125,6 +126,7 @@
 					});
 					return;
 				}
+				
 			});
 			//监听网络
 			this.$U.onNetWork();
