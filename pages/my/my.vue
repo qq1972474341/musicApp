@@ -129,9 +129,10 @@
 										},
 										success: res => {
 											console.log("登录成功");
-											if (res.data.code === 200) {
+											// console.log(res)
+											if (res.statusCode === 200) {
 												infoRes.userInfo.playNum = res.data.data.playNum;
-												console.log(infoRes.userInfo);
+												// console.log(infoRes.userInfo);
 												this.login(infoRes.userInfo);
 											}
 										},
