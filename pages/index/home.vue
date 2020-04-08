@@ -5,8 +5,8 @@
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
 					<image :src="item.img" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
-					<text class="text-white">{{item.title}}</text>
-					<text class="font-sm text-light-muted">{{item.desc}}</text>
+					<text class="text-white text-ellipsis" style="width: 330rpx;">{{item.title}}</text>
+					<text class="font-sm text-light-muted text-ellipsis" style="width: 330rpx;">{{item.desc}}</text>
 				</view>
 			</view>
 			<view class="mb-2" style="margin-top: -50rpx;">
@@ -58,7 +58,7 @@
 					}
 				],
 				list_home: [],
-				page: 0
+				music_page: 0
 
 			}
 		},
@@ -109,18 +109,26 @@
 			},
 			//获取歌曲
 			getMusic() {
+				this.music_page = this.music_page + 1;
+				console.log("获取第" + this.music_page + '页数据');
 				uni.request({
 					url: service.DOMAIN + 'api/v1.Music/getHomeMusic',
 					method: 'POST',
 					data: {
-						page: 1,
+						page: this.music_page,
 						limit: 6
 					},
 					success: res => {
-						this.list_home = [...this.list_home, ...res.data.data];
+						if (res.data.data.length>0) {
+							this.list_home = [...this.list_home, ...res.data.data];
+						} else {
+							this.music_page = this.music_page - 1;
+						}
 					},
 					fail: () => {},
-					complete: () => {}
+					complete: () => {
+						this.loadState = "more";
+					}
 				});
 			}
 		}

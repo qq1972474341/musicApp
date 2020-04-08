@@ -803,7 +803,7 @@
 	text-align: center;
 }
 
-/* 文字换行溢出处理 */
+/* 文字省略号溢出处理 */
 .text-ellipsis {
 	/* #ifndef APP-PLUS-NVUE */
 	overflow: hidden;

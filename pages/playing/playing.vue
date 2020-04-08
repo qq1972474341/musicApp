@@ -161,7 +161,7 @@
 				this.music.max = this.Audio.duration; //音乐总时长
 				this.music.played = this.Audio.currentTime;
 			}, 500)
-			
+
 		},
 		onUnload() {
 			console.log("播放页面卸载");
@@ -223,12 +223,15 @@
 					scene: "WXSenceTimeline",
 					type: 3,
 					imageUrl: this.Music.img,
-					title: this.Music.name,
+					title: this.Music.title,
 					mediaUrl: this.Music.src,
 					success: ret => {
 						//点击分享回调
 						console.log("分享点击回调")
 						console.log(JSON.stringify(ret));
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
 					}
 				});
 			}

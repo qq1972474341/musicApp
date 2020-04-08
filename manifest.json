@@ -9,7 +9,8 @@
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 3,
         "modules" : {
-            "OAuth" : {}
+            "OAuth" : {},
+            "Share" : {}
         },
         "distribute" : {
             "android" : {
@@ -32,6 +33,12 @@
                     "weixin" : {
                         "appid" : "wxae7aa15cf22f3f2f",
                         "appsecret" : "8ea91c242bd6328fc481ccae26cbe035",
+                        "UniversalLinks" : ""
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wxae7aa15cf22f3f2f",
                         "UniversalLinks" : ""
                     }
                 }
