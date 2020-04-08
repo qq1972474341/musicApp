@@ -248,12 +248,8 @@ var render = function() {
             [
               _c("v-uni-image", {
                 staticClass: _vm._$g(3, "sc"),
-                staticStyle: {
-                  width: "100rpx",
-                  height: "100rpx",
-                  left: "-10rpx"
-                },
-                attrs: { src: _vm._$g(3, "a-src"), mode: "aspectFill", _i: 3 }
+                staticStyle: { width: "60rpx", height: "60rpx" },
+                attrs: { src: "/static/icon.png", _i: 3 }
               }),
               _c(
                 "v-uni-text",
@@ -2509,7 +2505,11 @@ var render = function() {
                 [
                   _c("v-uni-image", {
                     staticStyle: { width: "330rpx", height: "330rpx" },
-                    attrs: { src: _vm._$g("4-" + $30, "a-src"), _i: "4-" + $30 }
+                    attrs: {
+                      src: _vm._$g("4-" + $30, "a-src"),
+                      mode: "aspectFill",
+                      _i: "4-" + $30
+                    }
                   }),
                   _c(
                     "v-uni-text",

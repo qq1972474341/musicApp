@@ -4,7 +4,7 @@
 		<scroll-view scroll-y="true" @scrolltolower="LoadMore" :style="{'height': scrollH+'px'}">
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
-					<image :src="item.img" style="width: 330rpx;height: 330rpx;"></image>
+					<image :src="item.img" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
 					<text class="text-white">{{item.title}}</text>
 					<text class="font-sm text-light-muted">{{item.desc}}</text>
 				</view>

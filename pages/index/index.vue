@@ -4,7 +4,7 @@
 		<uni-nav-bar backgroundColor="#282828" color="#ffffff" fixed statusBar>
 			<view class="flex align-center" slot="left">
 				<!-- <text class="iconfont iconMusic font-lg"></text> -->
-				<image class="position-fixed" src="../../static/icon.png" mode="aspectFill" style="width: 100rpx;height: 100rpx;left: -10rpx;"></image>
+				<image class="position-fixed" src="/static/icon.png" style="width: 60rpx;height: 60rpx;"></image>
 				<text class="font-lg font-weight-bolder" style="font-family: '宋体';margin-left: 80rpx;">Music</text>
 			</view>
 			<!-- 搜索框 -->
@@ -102,6 +102,7 @@
 			clearInterval(timer); //清除定时器
 		},
 		onLoad() {
+			//获取手机平台
 			try {
 				const res = uni.getSystemInfoSync();
 				console.log(res.platform); //获取平台 IOS/Android
@@ -109,6 +110,7 @@
 			} catch (e) {
 				// error
 			}
+			//未登陆试听检查事件
 			uni.$on('playCheck', () => {
 				//用户未登陆
 				if (!this.hasLogin) {
@@ -133,6 +135,12 @@
 			this.$U.onNetWork();
 			//首先检查登录状态
 			this.checkLogin();
+			//音乐被其他应用暂停
+			this.Audio.onPause(() => {
+				//设置播放状态为暂停
+				this.setPlaying(false);
+			})
+			//播放结束切歌
 			this.Audio.onEnded(() => {
 				//登录状态检查
 				if (!this.hasLogin) {
