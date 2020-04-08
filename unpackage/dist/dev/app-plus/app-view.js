@@ -246,15 +246,23 @@ var render = function() {
               slot: "left"
             },
             [
-              _c("v-uni-text", {
+              _c("v-uni-image", {
                 staticClass: _vm._$g(3, "sc"),
-                attrs: { _i: 3 }
+                staticStyle: {
+                  width: "100rpx",
+                  height: "100rpx",
+                  left: "-10rpx"
+                },
+                attrs: { src: _vm._$g(3, "a-src"), mode: "aspectFill", _i: 3 }
               }),
               _c(
                 "v-uni-text",
                 {
                   staticClass: _vm._$g(4, "sc"),
-                  staticStyle: { "font-family": "'宋体'" },
+                  staticStyle: {
+                    "font-family": "'宋体'",
+                    "margin-left": "80rpx"
+                  },
                   attrs: { _i: 4 }
                 },
                 [_vm._v("Music")]

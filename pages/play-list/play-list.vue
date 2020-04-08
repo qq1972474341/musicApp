@@ -6,7 +6,7 @@
 					<view class="flex m-2 flex-1" @tap="selectMusic(index)">
 						<image :src="item.img" mode="aspectFill" style="width: 100rpx;height: 100rpx;"></image>
 						<view class="flex flex-column justify-center ml-2">
-							<text class="text-white">{{item.name}}</text>
+							<text class="text-white">{{item.title}}</text>
 							<text class="text-light-muted font">{{item.author}}</text>
 						</view>
 					</view>

@@ -3,8 +3,9 @@
 		<!-- 顶部导航栏 -->
 		<uni-nav-bar backgroundColor="#282828" color="#ffffff" fixed statusBar>
 			<view class="flex align-center" slot="left">
-				<text class="iconfont iconMusic font-lg"></text>
-				<text class="ml-1 font-lger font-weight-bolder" style="font-family: '宋体';">Music</text>
+				<!-- <text class="iconfont iconMusic font-lg"></text> -->
+				<image class="position-fixed" src="../../static/icon.png" mode="aspectFill" style="width: 100rpx;height: 100rpx;left: -10rpx;"></image>
+				<text class="font-lg font-weight-bolder" style="font-family: '宋体';margin-left: 80rpx;">Music</text>
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-view" style="margin-left: 50rpx;" @tap="openSearch">
@@ -126,7 +127,7 @@
 					});
 					return;
 				}
-				
+
 			});
 			//监听网络
 			this.$U.onNetWork();
