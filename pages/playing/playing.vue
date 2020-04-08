@@ -3,7 +3,6 @@
 		<view class="status_bar">
 			<!-- 这里是状态栏 -->
 		</view>
-
 		<view class="ml-3 mt-2 position-fixed" hover-class="animated jello" @tap="back">
 			<text class="text-white iconfont iconfanhui-copy-copy font-lg font-weight-bold"></text>
 		</view>
@@ -56,7 +55,7 @@
 				</view>
 			</swiper-item>
 			<swiper-item>
-				<view class="swiper-item uni-bg-green">B</view>
+				歌词界面
 			</swiper-item>
 		</swiper>
 
@@ -103,10 +102,7 @@
 			uni.getSystemInfo({
 				success: res => {
 					console.log(res);
-					this.scrollH = res.windowHeight - res.statusBarHeight;
-					// #ifdef MP
-					this.scrollH -= 44
-					// #endif
+					this.scrollH = res.windowHeight - res.statusBarHeight-uni.upx2px(130);
 				}
 			})
 

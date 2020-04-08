@@ -25,8 +25,8 @@
 				<image :src="Music.img" style="width: 190rpx;height: 110rpx;" @tap="openPlaying" mode="aspectFill"></image>
 				<view class="flex-1 flex align-center" style="background-color: #1d1d1d;" @tap="openPlaying">
 					<view class="flex flex-column ml-3" style="width: 360rpx;">
-						<text class="text-white font font-weight-bold">{{Music.title}}</text>
-						<text class="text-light-muted font font-weight-bold">{{Music.author}}</text>
+						<text class="text-white font font-weight-bold text-ellipsis">{{Music.title}}</text>
+						<text class="text-light-muted font font-weight-bold text-ellipsis">{{Music.author}}</text>
 					</view>
 					<view class="flex flex-1 ml-1">
 						<view class="iconfont text-white" :class="getPlaying?'iconzanting-':'iconbofang'" @tap.stop="changeState"></view>

@@ -3966,18 +3966,9 @@ var render = function() {
             ],
             1
           ),
-          _c(
-            "v-uni-swiper-item",
-            { attrs: { _i: 28 } },
-            [
-              _c(
-                "v-uni-view",
-                { staticClass: _vm._$g(29, "sc"), attrs: { _i: 29 } },
-                [_vm._v("B")]
-              )
-            ],
-            1
-          )
+          _c("v-uni-swiper-item", { attrs: { _i: 28 } }, [
+            _vm._v("\n\t\t\t歌词界面\n\t\t")
+          ])
         ],
         1
       )
