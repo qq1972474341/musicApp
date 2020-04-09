@@ -5,8 +5,8 @@
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4 m-1" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
 					<image :src="item.cover" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
-					<text class="text-white text-ellipsis" style="width: 330rpx;">{{item.title}}</text>
-					<text class="font-sm text-light-muted text-ellipsis" style="width: 330rpx;">{{item.des}}</text>
+					<text class="text-white text-ellipsis-2 font" style="width: 330rpx;">{{item.title}}</text>
+					<text class="font-sm text-light-muted text-ellipsis" style="width: 330rpx;">{{item.author}}</text>
 				</view>
 			</view>
 			<view class="mb-2" style="margin-top: -50rpx;">
