@@ -102,38 +102,38 @@
 			uni.getSystemInfo({
 				success: res => {
 					console.log(res);
-					this.scrollH = res.windowHeight - res.statusBarHeight-uni.upx2px(130);
+					this.scrollH = res.windowHeight - res.statusBarHeight - uni.upx2px(130);
 				}
 			})
 
 			let that = this; //传递自身this
-			//检查网络
-			uni.getNetworkType({
-				success: function(res) {
-					if (res.networkType !== "wifi" && res.networkType !== 'none' && service.getSetting().onlyUseWifi || res.networkType !==
-						"wifi" && service.getSetting().onlyUseWifi === undefined && res.networkType !== 'none') {
-						console.log("当前非wifi状态 使用流量播放");
-						uni.showModal({
-							title: '提示',
-							content: '继续将使用流量播放',
-							confirmText: '继续',
-							success: (res) => {
-								//取消返回上一个页面
-								if (res.cancel) {
-									that.$store.commit("setPopState", false); //关闭音乐弹出层
-									this.setMusic(undefined); //音乐数据置空
-									uni.navigateBack({
-										delta: 1
-									})
-								} else {
-									//使用流量播放
-									service.setSetting('onlyUseWifi', false);
-								}
-							}
-						})
-					}
-				},
-			});
+			//检查wifi或数据网络
+			// uni.getNetworkType({
+			// 	success: function(res) {
+			// 		if (res.networkType !== "wifi" && res.networkType !== 'none' && service.getSetting().onlyUseWifi || res.networkType !==
+			// 			"wifi" && service.getSetting().onlyUseWifi === undefined && res.networkType !== 'none') {
+			// 			console.log("当前非wifi状态 使用流量播放");
+			// 			uni.showModal({
+			// 				title: '提示',
+			// 				content: '继续将使用流量播放',
+			// 				confirmText: '继续',
+			// 				success: (res) => {
+			// 					//取消返回上一个页面
+			// 					if (res.cancel) {
+			// 						that.$store.commit("setPopState", false); //关闭音乐弹出层
+			// 						this.setMusic(undefined); //音乐数据置空
+			// 						uni.navigateBack({
+			// 							delta: 1
+			// 						})
+			// 					} else {
+			// 						//使用流量播放
+			// 						service.setSetting('onlyUseWifi', false);
+			// 					}
+			// 				}
+			// 			})
+			// 		}
+			// 	},
+			// });
 			this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
 			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined && this.Audio.src !== this.Music.src) {
 				//播放音乐登录检查
@@ -148,7 +148,7 @@
 				//置音频标题
 				this.Audio.title = this.Music.title;
 				//置音频封面图
-				this.Audio.coverImgUrl = this.Music.img;
+				this.Audio.coverImgUrl = this.Music.cover;
 
 			}
 			//设置播放进度监听
@@ -218,7 +218,7 @@
 					provider: 'weixin',
 					scene: "WXSenceTimeline",
 					type: 3,
-					imageUrl: this.Music.img,
+					imageUrl: this.Music.cover,
 					title: this.Music.title,
 					mediaUrl: this.Music.src,
 					success: ret => {

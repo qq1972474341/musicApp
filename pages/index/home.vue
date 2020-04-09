@@ -4,9 +4,9 @@
 		<scroll-view scroll-y="true" @scrolltolower="LoadMore" :style="{'height': scrollH+'px'}">
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4 m-1" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
-					<image :src="item.img" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
+					<image :src="item.cover" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
 					<text class="text-white text-ellipsis" style="width: 330rpx;">{{item.title}}</text>
-					<text class="font-sm text-light-muted text-ellipsis" style="width: 330rpx;">{{item.desc}}</text>
+					<text class="font-sm text-light-muted text-ellipsis" style="width: 330rpx;">{{item.des}}</text>
 				</view>
 			</view>
 			<view class="mb-2" style="margin-top: -50rpx;">
@@ -68,7 +68,7 @@
 				success: (res) => {
 					//console.log(res);
 					this.scrollH = res.windowHeight - uni.upx2px(185);
-					console.log(this.scrollH)
+					//console.log(this.scrollH)
 				}
 			})
 			//初始化数据
@@ -112,14 +112,15 @@
 				this.music_page = this.music_page + 1;
 				console.log("获取第" + this.music_page + '页数据');
 				uni.request({
-					url: service.DOMAIN + 'api/v1.Music/getHomeMusic',
+					url: service.DOMAIN + 'api/v1.Music/getMusic',
 					method: 'POST',
 					data: {
+						type: 1,
 						page: this.music_page,
 						limit: 8
 					},
 					success: res => {
-						if (res.data.data.length>0) {
+						if (res.data.data.length > 0) {
 							this.list_home = [...this.list_home, ...res.data.data];
 						} else {
 							this.music_page = this.music_page - 1;

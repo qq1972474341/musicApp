@@ -3016,7 +3016,7 @@ var render = function() {
                     staticClass: _vm._$g("7-" + $30, "sc"),
                     staticStyle: { height: "420rpx" },
                     attrs: {
-                      src: "/static/demo/demo2.jpg",
+                      src: _vm._$g("7-" + $30, "a-src"),
                       mode: "aspectFill",
                       _i: "7-" + $30
                     }
@@ -3039,7 +3039,7 @@ var render = function() {
                           staticClass: _vm._$g("9-" + $30, "sc"),
                           attrs: { _i: "9-" + $30 }
                         },
-                        [_vm._v("添加文字")]
+                        [_vm._v(_vm._$g("9-" + $30, "t0-0"))]
                       ),
                       _c(
                         "v-uni-text",
@@ -3047,7 +3047,7 @@ var render = function() {
                           staticClass: _vm._$g("10-" + $30, "sc"),
                           attrs: { _i: "10-" + $30 }
                         },
-                        [_vm._v("介绍")]
+                        [_vm._v(_vm._$g("10-" + $30, "t0-0"))]
                       )
                     ],
                     1

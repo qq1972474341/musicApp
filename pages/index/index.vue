@@ -177,7 +177,7 @@
 					//置音频标题
 					this.Audio.title = this.Music.title;
 					//置音频封面图
-					this.Audio.coverImgUrl = this.Music.img;
+					this.Audio.coverImgUrl = this.Music.cover;
 				} else {
 					console.log("自由播放模式");
 				}
