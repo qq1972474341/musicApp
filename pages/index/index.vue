@@ -5,17 +5,18 @@
 			<view class="flex align-center" slot="left">
 				<!-- <text class="iconfont iconMusic font-lg"></text> -->
 				<image class="position-fixed" src="/static/icon.png" style="width: 60rpx;height: 60rpx;"></image>
-				<text class="font-lg font-weight-bolder" style="font-family: '宋体';margin-left: 80rpx;">Music</text>
+				<text class="font font-weight-bolder" style="font-family: '宋体';margin-left: 90rpx;">{{pageName}}</text>
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-view" style="margin-left: 50rpx;" @tap="openSearch">
 				<uni-icons class="input-uni-icon" type="search" size="22" color="#666666" />
 				<input confirm-type="search" class="nav-bar-input" type="text" placeholder="输入搜索关键词" disabled>
 			</view>
-			<view slot="right" @tap="openMessage" class="position-absolute">
+			<!-- 消息 -->
+			<view slot="right" @tap="openMessage" class="position-absolute ml-2">
 				<uni-icons type="chat" color="#fff" size="24"></uni-icons>
 				<view class="position-relative" style="z-index: 99999;display: inline;top: -30rpx;left: -20rpx;">
-					<uni-badge text="2" type="error"></uni-badge>
+					<uni-badge :text="msg_list.length" type="error"></uni-badge>
 				</view>
 			</view>
 		</uni-nav-bar>
@@ -85,7 +86,9 @@
 		data() {
 			return {
 				curPage: 'home',
-				progressNum: 0
+				pageName: '首页',
+				progressNum: 0,
+				msg_list: []
 			}
 		},
 		computed: {
@@ -102,6 +105,8 @@
 			clearInterval(timer); //清除定时器
 		},
 		onLoad() {
+			//获取消息列表
+			this.getMessageList();
 			//获取手机平台
 			try {
 				const res = uni.getSystemInfoSync();
@@ -125,11 +130,9 @@
 						uni.navigateBack({
 							delta: 1
 						})
-
 					});
 					return;
 				}
-
 			});
 			//监听网络
 			this.$U.onNetWork();
@@ -140,55 +143,19 @@
 				//设置播放状态为暂停
 				this.setPlaying(false);
 			})
-			//播放结束切歌
-			this.Audio.onEnded(() => {
-				//登录状态检查
-				if (!this.hasLogin) {
-					this.Audio.stop();
-					this.$store.commit("setPopState", false); //关闭音乐弹出层
-					//this.setMusic(undefined);
-					plus.nativeUI.alert('请先登录后听音乐', () => {
-						uni.navigateBack({
-							delta: 1
-						})
-					});
-					return;
-				}
-				console.log("音乐自然播放结束切歌");
-				let musicIndex = 0;
-				if (this.getPlayMode === 'playList') {
-					console.log("播放列表历史播放模式");
-					//console.log(this.$store.state.MusicLocalIndex);
-					let max = service.getPlayList().length - 1; //获取播放列表最大索引
-					//顺序循环播放模式
-					if (this.$store.state.MusicLocalIndex === max) {
-						//播放到最后一首从头开始
-						musicIndex = 0;
-						this.setMusicLocalIndex(musicIndex);
-					} else {
-						musicIndex = this.$store.state.MusicLocalIndex + 1
-						this.setMusicLocalIndex(musicIndex);
-					}
-					console.log("下一首索引：" + musicIndex);
-					this.setMusic(service.getPlayListMusic(musicIndex))
+			//播放开始事件
+			this.setPlayStartEvent()
+			//播放结束事件
+			this.setPlayEndEvent()
 
-					//置音频资源
-					this.Audio.src = this.Music.src;
-					//置音频标题
-					this.Audio.title = this.Music.title;
-					//置音频封面图
-					this.Audio.coverImgUrl = this.Music.cover;
-				} else {
-					console.log("自由播放模式");
-				}
-			})
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic', 'setPlatform']),
 			//打开消息页面
 			openMessage() {
+				//console.log(this.msg_list);
 				uni.navigateTo({
-					url: "../message/message"
+					url: "../message/message?list=" + encodeURIComponent(JSON.stringify(this.msg_list))
 				})
 			},
 			//检查登录状态
@@ -204,6 +171,17 @@
 			navClick: function(e) {
 				//console.log(e);
 				this.curPage = e.currentTarget.dataset.cur
+				switch (this.curPage) {
+					case 'home':
+						this.pageName = '首页';
+						break;
+					case 'music':
+						this.pageName = '串烧';
+						break;
+					case 'mypage':
+						this.pageName = '我的';
+						break;
+				}
 			},
 			//关闭播放弹出层
 			closePop() {
@@ -238,6 +216,86 @@
 					this.Audio.play();
 					this.setPlaying(true);
 				}
+			},
+			//获取消息列表
+			getMessageList() {
+				uni.request({
+					url: service.DOMAIN + 'api/v1.Message/getMessage',
+					method: 'POST',
+					data: {
+						page: 1,
+						limit: 15,
+						APP: true
+					},
+					success: res => {
+						if (res.data.data.length > 0) {
+							this.msg_list = res.data.data;
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			//设置播放开始事件
+			setPlayStartEvent() {
+				this.Audio.onPlay(() => {
+					console.log("开始播放事件:" + this.Music.id);
+					uni.request({
+						url: service.DOMAIN + 'api/v1.Music/countPlayNum',
+						method: 'POST',
+						data: {
+							id: this.Music.id
+						},
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				})
+			},
+			//设置播放结束事件
+			setPlayEndEvent() {
+				this.Audio.onEnded(() => {
+					//登录状态检查
+					if (!this.hasLogin) {
+						this.Audio.stop();
+						this.$store.commit("setPopState", false); //关闭音乐弹出层
+						//this.setMusic(undefined);
+						plus.nativeUI.alert('请先登录后听音乐', () => {
+							uni.navigateBack({
+								delta: 1
+							})
+						});
+						return;
+					}
+					console.log("音乐自然播放结束切歌");
+					let musicIndex = 0;
+					if (this.getPlayMode === 'playList') {
+						console.log("播放列表历史播放模式");
+						//console.log(this.$store.state.MusicLocalIndex);
+						let max = service.getPlayList().length - 1; //获取播放列表最大索引
+						//顺序循环播放模式
+						if (this.$store.state.MusicLocalIndex === max) {
+							//播放到最后一首从头开始
+							musicIndex = 0;
+							this.setMusicLocalIndex(musicIndex);
+						} else {
+							musicIndex = this.$store.state.MusicLocalIndex + 1
+							this.setMusicLocalIndex(musicIndex);
+						}
+						console.log("下一首索引：" + musicIndex);
+						this.setMusic(service.getPlayListMusic(musicIndex))
+
+						//置音频资源
+						this.Audio.src = this.Music.src;
+						//置音频标题
+						this.Audio.title = this.Music.title;
+						//置音频封面图
+						this.Audio.coverImgUrl = this.Music.cover;
+					} else {
+						console.log("自由播放模式");
+
+					}
+				})
 			}
 
 

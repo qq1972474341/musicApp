@@ -125,7 +125,7 @@
 										data: {
 											openid: infoRes.userInfo.openId,
 											avatarUrl: infoRes.userInfo.avatarUrl,
-											nickName:infoRes.userInfo.nickName
+											nickName: infoRes.userInfo.nickName
 										},
 										success: res => {
 											console.log("登录成功");
@@ -137,7 +137,10 @@
 											}
 										},
 										fail: () => {
-											console.log("登录失败");
+											uni.showToast({
+												icon: 'none',
+												title: '微信授权登陆失败'
+											});
 										},
 										complete: () => {}
 									});
@@ -146,7 +149,7 @@
 								fail() {
 									uni.showToast({
 										icon: 'none',
-										title: '登陆失败'
+										title: '微信授权登陆失败'
 									});
 								}
 							});
