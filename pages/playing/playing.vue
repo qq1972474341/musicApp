@@ -24,7 +24,7 @@
 						<!-- 文字滚动 -->
 						<view class="m-2 rounded">
 							<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF"
-							 :scrollable="playing" :speed="30" single="true" :text="Music.title+'        '+Music.author"></uni-notice-bar>
+							 :scrollable="getPlaying" :speed="30" single="true" :text="Music.title+'        '+Music.author"></uni-notice-bar>
 						</view>
 						<view class="flex justify-center flex-column">
 							<!-- 播放滑动条 -->
@@ -150,7 +150,6 @@
 				this.Audio.title = this.Music.title;
 				//置音频封面图
 				this.Audio.coverImgUrl = this.Music.cover;
-
 			}
 			//设置播放进度监听
 			timer = setInterval(() => {
@@ -197,6 +196,7 @@
 			},
 			//点击暂停播放
 			changeState() {
+				console.log('改变播放状态')
 				if (this.getPlaying) {
 					//暂停播放
 					this.Audio.pause();
@@ -206,7 +206,6 @@
 					this.Audio.play();
 					this.setPlaying(true);
 				}
-
 			},
 			//下载歌曲
 			downMusic() {

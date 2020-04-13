@@ -48,6 +48,7 @@ const store = new Vuex.Store({
 		},
 		//更改音乐播放状态
 		setPlaying(state, bool) {
+			console.log("设置播放状态:"+bool)
 			state.playing = bool;
 		},
 		//设置音乐对象

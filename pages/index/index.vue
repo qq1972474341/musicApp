@@ -147,7 +147,6 @@
 			this.setPlayStartEvent()
 			//播放结束事件
 			this.setPlayEndEvent()
-
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'login', 'logout', 'setMusicLocalIndex', 'setMusic', 'setPlatform']),
@@ -206,7 +205,8 @@
 			},
 			//播放和暂停
 			changeState() {
-				console.log((this.Audio.currentTime / this.Audio.duration) * 100);
+				// console.log((this.Audio.currentTime / this.Audio.duration) * 100);
+				console.log('改变播放状态')
 				if (this.getPlaying) {
 					//暂停播放
 					this.Audio.pause();
@@ -284,17 +284,16 @@
 						}
 						console.log("下一首索引：" + musicIndex);
 						this.setMusic(service.getPlayListMusic(musicIndex))
-
 						//置音频资源
 						this.Audio.src = this.Music.src;
 						//置音频标题
 						this.Audio.title = this.Music.title;
 						//置音频封面图
 						this.Audio.coverImgUrl = this.Music.cover;
+						this.Audio.play();
 					} else {
 						console.log("自由播放模式和搜索音乐播放模式");
 						
-
 					}
 				})
 			}
