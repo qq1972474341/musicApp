@@ -134,7 +134,8 @@
 			// 		}
 			// 	},
 			// });
-			this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
+			//this.$store.commit("setPopState", true); //可用mutations方法代替  显示音乐弹层
+			this.setPopState(true);
 			if (JSON.stringify(this.Music) !== '{}' && this.Music != undefined && this.Audio.src !== this.Music.src) {
 				//播放音乐登录检查
 				uni.$emit('playCheck');

@@ -32,10 +32,10 @@
 		},
 		//点击键盘搜索按钮事件
 		onNavigationBarSearchInputConfirmed(e) {
-			service.addSearchHistory(e.text);
-			this.list = service.getSearchHistory();
+			service.addSearchHistory(e.text); //保存搜索历史
+			this.list = service.getSearchHistory(); //刷新搜索历史列表
 			uni.navigateTo({
-				url: '../search-reasult/search-reasult?key=' + e.text
+				url: '../search-reasult/search-reasult?keyword=' + e.text
 			})
 		},
 
@@ -43,7 +43,7 @@
 			//点击历史项事件
 			tapList(item) {
 				uni.navigateTo({
-					url: '../search-reasult/search-reasult?key=' + item
+					url: '../search-reasult/search-reasult?keyword=' + item
 				})
 			},
 			//清除全部历史记录

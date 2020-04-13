@@ -13,7 +13,6 @@
 				</uni-swipe-action-item>
 			</block>
 		</uni-swipe-action>
-
 	</view>
 </template>
 
@@ -55,10 +54,10 @@
 			},
 			//选择音乐
 			selectMusic(index) {
-				this.setPopState(true); //设置音乐弹层显示
+				//this.setPopState(true); //设置音乐弹层显示
 				this.setMusic(this.list[index]); //设置当前音乐资源
 				this.setPlayMode('playList'); //设置播放列表播放模式
-				this.setMusicLocalIndex(index); //设置当前播放列表音乐索引
+				this.setMusicLocalIndex(index); //设置当前播放列表音乐索引  不同的播放模式 不同的列表
 				uni.navigateBack({
 					delta: 1
 				});

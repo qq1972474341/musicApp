@@ -7170,7 +7170,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-uni-view", { attrs: { _i: 0 } })
+  return _c(
+    "v-uni-view",
+    { attrs: { _i: 0 } },
+    [
+      _vm._$g(1, "i")
+        ? [
+            _vm._l(_vm._$g(2, "f"), function(item, index, $20, $30) {
+              return [
+                _c(
+                  "v-uni-view",
+                  {
+                    key: item["k0"],
+                    staticClass: _vm._$g("3-" + $30, "sc"),
+                    attrs: { _i: "3-" + $30 },
+                    on: {
+                      click: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("v-uni-image", {
+                      staticStyle: { width: "100rpx", height: "100rpx" },
+                      attrs: {
+                        src: _vm._$g("4-" + $30, "a-src"),
+                        mode: "aspectFill",
+                        _i: "4-" + $30
+                      }
+                    }),
+                    _c(
+                      "v-uni-view",
+                      {
+                        staticClass: _vm._$g("5-" + $30, "sc"),
+                        attrs: { _i: "5-" + $30 }
+                      },
+                      [
+                        _c(
+                          "v-uni-text",
+                          {
+                            staticClass: _vm._$g("6-" + $30, "sc"),
+                            attrs: { _i: "6-" + $30 }
+                          },
+                          [_vm._v(_vm._$g("6-" + $30, "t0-0"))]
+                        ),
+                        _c(
+                          "v-uni-text",
+                          {
+                            staticClass: _vm._$g("7-" + $30, "sc"),
+                            attrs: { _i: "7-" + $30 }
+                          },
+                          [_vm._v(_vm._$g("7-" + $30, "t0-0"))]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            })
+          ]
+        : [
+            _c(
+              "v-uni-view",
+              { staticClass: _vm._$g(9, "sc"), attrs: { _i: 9 } },
+              [
+                _c(
+                  "v-uni-text",
+                  { staticClass: _vm._$g(10, "sc"), attrs: { _i: 10 } },
+                  [_vm._v("没有搜索到相关音乐")]
+                )
+              ],
+              1
+            )
+          ]
+    ],
+    2
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []

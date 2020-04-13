@@ -96,16 +96,16 @@ export default {
 		}
 		uni.setStorageSync(PLAY_LIST, list);
 	},
-	//获取播放列表
+	//获取播放历史列表
 	getPlayList() {
 		return uni.getStorageSync(PLAY_LIST);
 	},
-	//获取播放列表指定索引音乐
+	//获取播放历史列表指定索引音乐
 	getPlayListMusic(index) {
 		let list = uni.getStorageSync(PLAY_LIST);
 		return list[index];
 	},
-	//删除播放列表中一条数据
+	//删除播放历史列表中一条数据
 	deletePlayListItem(index) {
 		let list = uni.getStorageSync(PLAY_LIST);
 		list.splice(index, 1);

@@ -292,7 +292,8 @@
 						//置音频封面图
 						this.Audio.coverImgUrl = this.Music.cover;
 					} else {
-						console.log("自由播放模式");
+						console.log("自由播放模式和搜索音乐播放模式");
+						
 
 					}
 				})
