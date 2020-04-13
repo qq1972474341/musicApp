@@ -239,17 +239,7 @@
 			//设置播放开始事件
 			setPlayStartEvent() {
 				this.Audio.onPlay(() => {
-					console.log("开始播放事件:" + this.Music.id);
-					uni.request({
-						url: service.DOMAIN + 'api/v1.Music/countPlayNum',
-						method: 'POST',
-						data: {
-							id: this.Music.id
-						},
-						success: res => {},
-						fail: () => {},
-						complete: () => {}
-					});
+					this.setPlaying(true); //置播放状态 为 true
 				})
 			},
 			//设置播放结束事件
@@ -269,8 +259,8 @@
 					}
 					console.log("音乐自然播放结束切歌");
 					let musicIndex = 0;
-					if (this.getPlayMode === 'playList') {
-						console.log("播放列表历史播放模式");
+					if (this.getPlayMode === 1) {
+						console.log("列表播放模式");
 						//console.log(this.$store.state.MusicLocalIndex);
 						let max = service.getPlayList().length - 1; //获取播放列表最大索引
 						//顺序循环播放模式
@@ -283,21 +273,26 @@
 							this.setMusicLocalIndex(musicIndex);
 						}
 						console.log("下一首索引：" + musicIndex);
-						this.setMusic(service.getPlayListMusic(musicIndex))
-						//置音频资源
-						this.Audio.src = this.Music.src;
-						//置音频标题
-						this.Audio.title = this.Music.title;
-						//置音频封面图
-						this.Audio.coverImgUrl = this.Music.cover;
+						this.setMusic(service.getPlayListMusic(musicIndex));
+
+					} else if (this.getPlayMode == 2) {
+						console.log("单曲循环模式");
 						this.Audio.play();
-					} else {
-						console.log("自由播放模式和搜索音乐播放模式");
-						
+					} else if (this.getPlayMode == 3) {
+						console.log("随机播放模式");
+						uni.request({
+							url: service.DOMAIN + 'api/v1.Music/getRandomMusic',
+							method: 'POST',
+							data: {
+								id: this.Music.id
+							},
+							success: (res) => {
+								this.setMusic(res.data.data)
+							}
+						});
 					}
 				})
 			}
-
 
 		}
 	}

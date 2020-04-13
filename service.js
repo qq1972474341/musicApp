@@ -87,12 +87,11 @@ export default {
 			console.log("播放列表添加新数据");
 			list.unshift(item); //插入到第一位
 		} else {
-			//废弃排序 会影响顺序播放等
+			// 废弃排序 会影响顺序播放等
 			// 将播放历史提升到第一位
-
-			// let index = list.indexOf(tmp);
-			// list.splice(index, 1); //删除原位置数据
-			// list.unshift(item); //插入到第一位
+			let index = list.indexOf(tmp);
+			list.splice(index, 1); //删除原位置数据
+			list.unshift(item); //插入到第一位
 		}
 		uni.setStorageSync(PLAY_LIST, list);
 	},

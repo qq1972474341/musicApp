@@ -74,7 +74,7 @@
 			},
 			getMusic() {
 				this.music_page = this.music_page + 1;
-				console.log("获取第" + this.music_page + '页数据');
+				//console.log("获取第" + this.music_page + '页数据');
 				uni.request({
 					url: service.DOMAIN + 'api/v1.Music/getMusic',
 					method: 'POST',

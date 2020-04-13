@@ -17,7 +17,9 @@
 				<view>
 					<view class="mt-2">
 						<!-- 显示图片 -->
-						<image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
+						<!-- <image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill"> -->
+						<image :src="show_img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
+
 					</view>
 					<view class="fixed-bottom" style="background-color: #131313;height: 740rpx;width: 750rpx;">
 						<view style="height: 100rpx;"></view> <!-- 占位符 -->
@@ -38,8 +40,9 @@
 
 							<!-- 播放按钮等 -->
 							<view class="flex flex-row align-center justify-center">
-								<!-- 下载-->
-								<view class="text-white font-lger iconfont iconxiazai mx-4" hover-class="animated pulse" @tap="downMusic"></view>
+								<!-- 播放模式-->
+								<view class="text-white iconfont mx-4 font-weight-bolder" style="font-size: 60rpx;" :class="playMode" hover-class="animated pulse"
+								 @tap="changePlayMode"></view>
 								<!-- 上一首-->
 								<view class="text-white font-lger iconfont iconziyuanldpi8 mx-4" hover-class="animated pulse"></view>
 								<!-- 播放 -->
@@ -88,20 +91,38 @@
 			}
 		},
 		computed: {
-			...mapGetters(['getPopState', 'getPlaying']),
+			...mapGetters(['getPopState', 'getPlaying', 'getPlayMode']),
 			...mapState(['Audio', 'Music', 'hasLogin', 'playing']),
 			formatTime1() {
 				return $T.formatSeconds(this.music.played);
 			},
 			formatTime2() {
 				return $T.formatSeconds(this.music.max);
+			},
+			//随机获取一张图片
+			show_img() {
+				let num = this.randomNum(1, 20);
+				return '/static/show_img/' + num + '.jpg'
+			},
+			//播放模式
+			playMode() {
+				// console.log(this.getPlayMode);
+				switch (this.getPlayMode) {
+					case 1:
+						return 'iconliebiaoxunhuan';
+					case 2:
+						return 'icondanquxunhuan';
+					case 3:
+						return 'iconsuiji';
+				}
+				return 'iconliebiaoxunhuan';
 			}
 		},
 		onLoad(e) {
 			//初始化高度
 			uni.getSystemInfo({
 				success: res => {
-					console.log(res);
+					//console.log(res);
 					this.scrollH = res.windowHeight - res.statusBarHeight - uni.upx2px(130);
 				}
 			})
@@ -140,16 +161,7 @@
 				//播放音乐登录检查
 				uni.$emit('playCheck');
 				console.log("音乐页面");
-				//添加到播放列表
-				service.addPlayList(this.Music);
-				console.log('开始播放');
-				this.setPlaying(true); //置播放状态 为 true
-				//置音频资源
-				this.Audio.src = this.Music.src;
-				//置音频标题
-				this.Audio.title = this.Music.title;
-				//置音频封面图
-				this.Audio.coverImgUrl = this.Music.cover;
+
 			}
 			//设置播放进度监听
 			timer = setInterval(() => {
@@ -164,7 +176,44 @@
 			clearInterval(timer);
 		},
 		methods: {
-			...mapMutations(['setPopState', 'setPlaying', 'setMusic']),
+			...mapMutations(['setPopState', 'setPlaying', 'setMusic', 'setPlayMode']),
+			//改变播放模式
+			changePlayMode() {
+				this.setPlayMode(this.getPlayMode + 1);
+				if (this.getPlayMode > 3) this.setPlayMode(1);
+				switch (this.getPlayMode) {
+					case 1:
+						uni.showToast({
+							title: '切换到列表播放'
+						});
+						break;
+					case 2:
+						uni.showToast({
+							title: '切换到单曲循环'
+						});
+						break;
+					case 3:
+						uni.showToast({
+							title: '切换到随机播放'
+						});
+						break;
+				}
+
+			},
+			//生成从minNum到maxNum的随机数
+			randomNum(minNum, maxNum) {
+				switch (arguments.length) {
+					case 1:
+						return parseInt(Math.random() * minNum + 1, 10);
+						break;
+					case 2:
+						return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+						break;
+					default:
+						return 0;
+						break;
+				}
+			},
 			//swiper滑动事件
 			onChangeTab(e) {
 				this.tabIndex = e.detail.current;
@@ -206,10 +255,6 @@
 					this.Audio.play();
 					this.setPlaying(true);
 				}
-			},
-			//下载歌曲
-			downMusic() {
-				console.log("下载歌曲");
 			},
 			//分享歌曲
 			share() {
