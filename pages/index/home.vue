@@ -6,11 +6,12 @@
 				<view class="flex flex-column mb-4 m-1" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
 					<image :src="item.cover" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
 					<text class="text-white text-ellipsis-2 font" style="width: 330rpx;">{{item.title}}</text>
-					<view class="font-sm text-light-muted text-ellipsis flex align-center" style="width: 330rpx;height: 35rpx;">{{item.author}}
+					<view class="font-sm text-light-muted flex align-center" style="width: 330rpx;height: 35rpx;">
+						<view class="text-ellipsis" style="max-width: 150rpx;">{{item.author}}</view>
 						<text class="font-weight-bolder font-lger">·</text>
 						{{item.playNum|formatPlayNum}}次播放
 					</view>
-					<!-- {{item.playNum|formatPlayNum}} -->
+					<view v-if="item.upload_author" class="text-light-muted font-sm text-ellipsis" style="width: 330rpx;">发布者：{{item.upload_author}}</view>
 				</view>
 			</view>
 			<!-- 下拉加载条 -->

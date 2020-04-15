@@ -13,8 +13,9 @@
 					</template>
 				</view>
 			</view>
-			<view v-show="hasLogin" class="m-2">
+			<view v-show="hasLogin" class="m-2 flex align-center">
 				<text class="text-white font-sm">听歌点数：{{userInfo.playNum}}</text>
+				<image class="ml-1 mt-1" src="/static/zuanshi.png" style="width: 30rpx;height: 30rpx;"></image>
 			</view>
 		</view>
 		<view>
@@ -37,7 +38,7 @@
 			</view>
 			<view v-show="this.hasLogin" class="flex align-center" hover-class="bg-hover-secondary" @tap="switchAccount">
 				<text class="iconfont p-2 text-light-muted font-lg iconqiehuanzhanghao"></text>
-				<text class="text-white font-sm">切换账号</text>
+				<text class="text-white font-sm">退出登录</text>
 			</view>
 		</view>
 	</view>
@@ -82,7 +83,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logout']),
-			uploadMusic() {},
+			uploadMusic() {
+				plus.nativeUI.toast('暂未开通');
+			},
 			//跳转页面
 			open(e) {
 				uni.navigateTo({
@@ -92,7 +95,7 @@
 			switchAccount() {
 				uni.showModal({
 					title: "提示",
-					content: '\n 确定要切换账号吗?',
+					content: '\n 确定要退出账号吗?',
 					success: (res) => {
 						if (res.confirm) {
 							//停止音乐服务
@@ -100,6 +103,7 @@
 							this.$store.commit("setPopState", false); //关闭音乐弹出层
 							//登出账号
 							this.logout();
+							plus.nativeUI.toast('退出成功');
 						}
 					}
 				})
@@ -129,6 +133,7 @@
 										},
 										success: res => {
 											console.log("登录成功");
+											plus.nativeUI.toast('登陆成功');
 											// console.log(res)
 											if (res.statusCode === 200) {
 												infoRes.userInfo.playNum = res.data.data.playNum;

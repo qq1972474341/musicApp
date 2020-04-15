@@ -47,10 +47,12 @@
 		<view style="height: 95rpx;"></view>
 		<!-- 底部导航栏95rpx -->
 		<adTabbar backgroundColor="#1d1d1d">
-			<adTabbarItem text="首页" :textColor="curPage=='home'?'#e4e4e4':'#5d5d5d'" dataCur="home" class="maxWidth" @click="navClick"
-			 :icon="curPage=='home'?'/static/tabbar/indexed.png':'/static/tabbar/index.png'"></adTabbarItem>
-			<adTabbarItem text="串烧音乐" :textColor="curPage=='music'?'#e4e4e4':'#5d5d5d'" dataCur="music" class="maxWidth" @click="navClick"
-			 :icon="curPage=='music'?'/static/tabbar/musiced.png':'/static/tabbar/music.png'"></adTabbarItem>
+			<adTabbarItem text="DJ" :textColor="curPage=='home'?'#e4e4e4':'#5d5d5d'" dataCur="home" class="maxWidth" @click="navClick"
+			 :icon="curPage=='home'?'/static/tabbar/musiced.png':'/static/tabbar/music.png'"></adTabbarItem>
+			<!-- 	 <adTabbarItem text="DJ" :textColor="curPage=='home'?'#e4e4e4':'#5d5d5d'" dataCur="home" class="maxWidth" @click="navClick"
+			  :icon="curPage=='home'?'/static/tabbar/indexed.png':'/static/tabbar/index.png'"></adTabbarItem> -->
+			<!-- 		<adTabbarItem text="串烧音乐" :textColor="curPage=='music'?'#e4e4e4':'#5d5d5d'" dataCur="music" class="maxWidth" @click="navClick"
+			 :icon="curPage=='music'?'/static/tabbar/musiced.png':'/static/tabbar/music.png'"></adTabbarItem> -->
 			<adTabbarItem text="我的" :textColor="curPage=='mypage'?'#e4e4e4':'#5d5d5d'" dataCur="mypage" class="maxWidth" @click="navClick"
 			 :icon="curPage=='mypage'?'/static/tabbar/myed.png':'/static/tabbar/my.png'"></adTabbarItem>
 		</adTabbar>
@@ -86,7 +88,7 @@
 		data() {
 			return {
 				curPage: 'home',
-				pageName: '首页',
+				pageName: 'DJ',
 				progressNum: 0,
 				msg_list: []
 			}
@@ -170,9 +172,10 @@
 			navClick: function(e) {
 				//console.log(e);
 				this.curPage = e.currentTarget.dataset.cur
+				//切换标题栏文字
 				switch (this.curPage) {
 					case 'home':
-						this.pageName = '首页';
+						this.pageName = 'DJ';
 						break;
 					case 'music':
 						this.pageName = '串烧';
@@ -257,7 +260,7 @@
 						});
 						return;
 					}
-					console.log("音乐自然播放结束切歌");
+					console.log("音乐自然播放结束切歌" + this.getPlayMode);
 					let musicIndex = 0;
 					if (this.getPlayMode === 1) {
 						console.log("列表播放模式");

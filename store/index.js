@@ -55,6 +55,16 @@ const store = new Vuex.Store({
 		setMusic(state, music) {
 			//设置全局音乐资源
 			state.Music = music;
+			//播放历史
+			service.addPlayList(music);
+			//置音频资源
+			state.Audio.src = music.src;
+			//置音频标题
+			state.Audio.title = music.title;
+			//置音频封面图
+			state.Audio.coverImgUrl = music.cover;
+			//置播放状态 为 true 防止事件响应过慢 所以重复调用
+			state.playing = true;
 			//mutations必须为同步事件，或者不要改变任何变量状态
 			uni.request({
 				url: service.DOMAIN + 'api/v1.Music/countPlayNum',
@@ -63,13 +73,6 @@ const store = new Vuex.Store({
 					id: state.Music.id
 				}
 			});
-			service.addPlayList(music);
-			//置音频资源
-			state.Audio.src = music.src;
-			//置音频标题
-			state.Audio.title = music.title;
-			//置音频封面图
-			state.Audio.coverImgUrl = music.cover;
 		},
 		//设置播放模式
 		setPlayMode(state, mode) {

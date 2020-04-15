@@ -18,10 +18,9 @@
 					<view class="mt-2">
 						<!-- 显示图片 -->
 						<!-- <image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill"> -->
-						<image :src="show_img" style="width: 750rpx;height: 425rpx;" mode="aspectFill">
-
+						<image :src="coverPath" style="width: 750rpx;height: 750rpx;" mode="aspectFill">
 					</view>
-					<view class="fixed-bottom" style="background-color: #131313;height: 740rpx;width: 750rpx;">
+					<view class="fixed-bottom" style="background-color: #131313;height: 650rpx;width: 750rpx;">
 						<view style="height: 100rpx;"></view> <!-- 占位符 -->
 						<!-- 文字滚动 -->
 						<view class="m-2 rounded">
@@ -41,15 +40,17 @@
 							<!-- 播放按钮等 -->
 							<view class="flex flex-row align-center justify-center">
 								<!-- 播放模式-->
-								<view class="text-white iconfont mx-4 font-weight-bolder" style="font-size: 60rpx;" :class="playMode" hover-class="animated pulse"
-								 @tap="changePlayMode"></view>
+								<view class="text-white iconfont mx-4 font-weight-bolder" style="font-size: 60rpx;" :class="playMode"
+								 hover-class="animated pulse" @tap="changePlayMode"></view>
 								<!-- 上一首-->
-								<view class="text-white font-lger iconfont iconziyuanldpi8 mx-4" hover-class="animated pulse"></view>
+								<view class="text-white iconfont iconshangyishou mx-4" style="font-size: 75rpx;" hover-class="animated pulse"
+								 @tap="lastMusic"></view>
 								<!-- 播放 -->
 								<view @tap="changeState" class="text-white iconfont mx-4" style="font-size: 70rpx;" hover-class="animated pulse"
 								 :class="getPlaying ? 'iconzantingtingzhi':'iconziyuanldpi11'"></view>
 								<!-- 下一首 -->
-								<view class="text-white font-lger iconfont iconziyuanldpi9  mx-4" hover-class="animated pulse"></view>
+								<view class="text-white iconfont iconxiayishou  mx-4" style="font-size: 75rpx;" hover-class="animated pulse"
+								 @tap="nextMusic"></view>
 								<!-- 分享 -->
 								<view class="text-white font-lger iconfont iconfenxiang mx-4" hover-class="animated pulse" @tap="share"></view>
 							</view>
@@ -87,7 +88,8 @@
 				music: {
 					max: 0, //播放总时长
 					played: 0, //已播放时长
-				}
+				},
+				coverPath:this.show_img()
 			}
 		},
 		computed: {
@@ -98,11 +100,6 @@
 			},
 			formatTime2() {
 				return $T.formatSeconds(this.music.max);
-			},
-			//随机获取一张图片
-			show_img() {
-				let num = this.randomNum(1, 20);
-				return '/static/show_img/' + num + '.jpg'
 			},
 			//播放模式
 			playMode() {
@@ -177,6 +174,39 @@
 		},
 		methods: {
 			...mapMutations(['setPopState', 'setPlaying', 'setMusic', 'setPlayMode']),
+			//随机获取一张图片
+			show_img() {
+				let num = this.randomNum(1, 20);
+				return '/static/show_img/' + num + '.jpg'
+			},
+			//上一首歌曲
+			lastMusic() {
+				this.coverPath = this.show_img();
+				uni.request({
+					url: service.DOMAIN + 'api/v1.Music/getRandomMusic',
+					method: 'POST',
+					data: {
+						id: this.Music.id
+					},
+					success: (res) => {
+						this.setMusic(res.data.data)
+					}
+				});
+			},
+			//下一首歌曲
+			nextMusic() {
+				this.coverPath = this.show_img();
+				uni.request({
+					url: service.DOMAIN + 'api/v1.Music/getRandomMusic',
+					method: 'POST',
+					data: {
+						id: this.Music.id
+					},
+					success: (res) => {
+						this.setMusic(res.data.data)
+					}
+				});
+			},
 			//改变播放模式
 			changePlayMode() {
 				this.setPlayMode(this.getPlayMode + 1);
