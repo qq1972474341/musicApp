@@ -2,6 +2,7 @@
 	<view>
 		<!-- 首页显示内容 -->
 		<scroll-view scroll-y="true" @scrolltolower="LoadMore" :style="{'height': scrollH+'px'}">
+			
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4 m-1" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
 					<image :src="item.cover" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>

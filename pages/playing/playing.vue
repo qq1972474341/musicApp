@@ -183,7 +183,7 @@
 			lastMusic() {
 				this.coverPath = this.show_img();
 				uni.request({
-					url: service.DOMAIN + 'api/v1.Music/getRandomMusic',
+					url: service.DOMAIN + 'api/v1.Music/lastMusic',
 					method: 'POST',
 					data: {
 						id: this.Music.id
@@ -197,7 +197,7 @@
 			nextMusic() {
 				this.coverPath = this.show_img();
 				uni.request({
-					url: service.DOMAIN + 'api/v1.Music/getRandomMusic',
+					url: service.DOMAIN + 'api/v1.Music/nextMusic',
 					method: 'POST',
 					data: {
 						id: this.Music.id
