@@ -24,11 +24,14 @@
 	export default {
 		data() {
 			return {
-				list: service.getSearchHistory()
+				list: []
 			}
 		},
 		onLoad() {
 			//console.log(JSON.stringify(service.getSearchHistory()));
+		},
+		onShow() {
+			this.list = service.getSearchHistory()
 		},
 		//点击键盘搜索按钮事件
 		onNavigationBarSearchInputConfirmed(e) {
@@ -38,10 +41,10 @@
 				url: '../search-reasult/search-reasult?keyword=' + e.text
 			})
 		},
-
 		methods: {
 			//点击历史项事件
 			tapList(item) {
+				service.addSearchHistory(item); //保存搜索历史
 				uni.navigateTo({
 					url: '../search-reasult/search-reasult?keyword=' + item
 				})
