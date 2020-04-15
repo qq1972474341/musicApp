@@ -64,7 +64,7 @@
 	import uniBadge from '@/components/uni-badge/uni-badge.vue';
 	import adTabbar from '@/components/andy-ADTabbar/andy-ADTabbar.vue';
 	import adTabbarItem from '@/components/andy-ADTabbar/andy-ADTabbarItem.vue';
-	import home from '@/pages/index/home.vue';
+	import home from '@/pages/index/home.nvue';
 	import mypage from '@/pages/my/my.vue';
 	import music from '@/pages/music/music.vue';
 	import service from '@/service.js';

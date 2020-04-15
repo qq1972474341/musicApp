@@ -60,7 +60,8 @@
 			"navigationStyle": "default",
 			"navigationBarTitleText": "搜索结果"
 		}
-	}],
+	}   
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "音乐",

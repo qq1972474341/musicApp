@@ -89,7 +89,7 @@
 					max: 0, //播放总时长
 					played: 0, //已播放时长
 				},
-				coverPath:this.show_img()
+				coverPath: this.show_img()
 			}
 		},
 		computed: {
@@ -189,7 +189,11 @@
 						id: this.Music.id
 					},
 					success: (res) => {
-						this.setMusic(res.data.data)
+						if (res.data.data != null) {
+							this.setMusic(res.data.data)
+						} else {
+							plus.nativeUI.toast('没有更多歌曲了');
+						}
 					}
 				});
 			},
@@ -203,7 +207,11 @@
 						id: this.Music.id
 					},
 					success: (res) => {
-						this.setMusic(res.data.data)
+						if (res.data.data != null) {
+							this.setMusic(res.data.data)
+						} else {
+							plus.nativeUI.toast('没有更多歌曲了');
+						}
 					}
 				});
 			},
