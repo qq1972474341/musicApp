@@ -789,6 +789,9 @@
 .text-through {
 	text-decoration: line-through;
 }
+.text-underline {
+	text-decoration: underline;
+}
 
 /* 文字对齐 */
 .text-left {

@@ -4,11 +4,11 @@
 			<block v-for="(item,index) in list" :key="index">
 				<uni-list-item :showArrow="false" @click="tapList(item)">
 					<view class="flex justify-between">
-						<view class="flex align-center">
-							<text class="iconfont iconlishi-copy mr-2" style="color: #ababab;"></text>
-							<text style="color: #ababab;">{{item}}</text>
+						<view class="flex align-center" >
+							<text class="iconfont iconlishi-copy mr-2 text-light-muted"></text>
+							<text class="text-light-muted">{{item}}</text>
 						</view>
-						<view class="iconfont iconguanbi text-light-muted" @tap="deleteHistory(index)" hover-class="animated fadeInDown"></view>
+						<view class="iconfont iconguanbi text-light-muted" @tap.stop="deleteHistory(index)"></view>
 					</view>
 				</uni-list-item>
 			</block>
@@ -57,6 +57,7 @@
 			},
 			//删除一条历史记录
 			deleteHistory(index) {
+				console.log("删除记录")
 				service.deleteHistoryItem(index);
 				this.list = service.getSearchHistory();
 			}

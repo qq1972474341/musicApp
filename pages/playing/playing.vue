@@ -20,8 +20,8 @@
 						<!-- <image :src="Music.img" style="width: 750rpx;height: 425rpx;" mode="aspectFill"> -->
 						<image :src="coverPath" style="width: 750rpx;height: 750rpx;" mode="aspectFill">
 					</view>
-					<view class="fixed-bottom" style="background-color: #131313;height: 650rpx;width: 750rpx;">
-						<view style="height: 100rpx;"></view> <!-- 占位符 -->
+					<view class="fixed-bottom" style="background-color: #131313;height: 500rpx;width: 750rpx;">
+						<view style="height: 20rpx;"></view>
 						<!-- 文字滚动 -->
 						<view class="m-2 rounded">
 							<uni-notice-bar style="margin-bottom: 100rpx;" size="50rpx" background-color="#131313" color="#FFFFFF"
@@ -35,8 +35,7 @@
 								<text class="text-light-muted font-sm">{{formatTime1}}</text>
 								<text class="text-light-muted font-sm">{{formatTime2}}</text>
 							</view>
-							<view style="height: 50rpx;"></view> <!-- 占位符 -->
-
+							<!-- <view style="height: 50rpx;"></view> -->
 							<!-- 播放按钮等 -->
 							<view class="flex flex-row align-center justify-center">
 								<!-- 播放模式-->
@@ -181,7 +180,7 @@
 			},
 			//上一首歌曲
 			lastMusic() {
-				this.coverPath = this.show_img();
+
 				uni.request({
 					url: service.DOMAIN + 'api/v1.Music/lastMusic',
 					method: 'POST',
@@ -190,6 +189,7 @@
 					},
 					success: (res) => {
 						if (res.data.data != null) {
+							this.coverPath = this.show_img();
 							this.setMusic(res.data.data)
 						} else {
 							plus.nativeUI.toast('没有更多歌曲了');
@@ -208,6 +208,7 @@
 					},
 					success: (res) => {
 						if (res.data.data != null) {
+							this.coverPath = this.show_img();
 							this.setMusic(res.data.data)
 						} else {
 							plus.nativeUI.toast('没有更多歌曲了');

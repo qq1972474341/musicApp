@@ -1,8 +1,10 @@
 <template>
 	<view>
 		<!-- 首页显示内容 -->
-		<scroll-view scroll-y="true" @scrolltolower="LoadMore" :style="{'height': scrollH+'px'}">
-			
+		<scroll-view :scroll-y="true" @scrolltolower="LoadMore" :style="{'height': scrollH+'px'}" :refresher-enabled="true"
+		 refresher-background="#000" :refresher-triggered="triggered" :refresher-threshold="100" @refresherpulling="onPulling"
+		 @refresherrefresh="onRefresh" @refresherrestore="onRestore" @refresherabort="onAbort">
+
 			<view class="flex flex-wrap py-2 justify-between">
 				<view class="flex flex-column mb-4 m-1" v-for="(item,index) in list_home" :key="index" @tap="selectMusic(index)">
 					<image :src="item.cover" style="width: 330rpx;height: 330rpx;" mode="aspectFill"></image>
@@ -43,6 +45,9 @@
 		},
 		data() {
 			return {
+				//下拉刷新
+				triggered: false,
+				//上拉加载
 				loadState: "more",
 				loadText: {
 					contentdown: "下拉显示更多",
@@ -70,6 +75,8 @@
 			}
 		},
 		created() {
+			this._freshing = false;
+			this.triggered = true;
 			//初始化页面大小 185rpx
 			uni.getSystemInfo({
 				success: (res) => {
@@ -80,9 +87,6 @@
 			})
 			//初始化数据
 			this.getMusic();
-		},
-		onReachBottom() {
-			console.log("到底部")
 		},
 		//过滤器
 		filters: {
@@ -100,6 +104,45 @@
 		},
 		methods: {
 			...mapMutations(['setMusic']),
+			//下拉刷新事件
+			onPulling(e) {
+				// console.log("onpulling", e);
+			},
+			onRefresh() {
+				console.log('刷新')
+				if (this._freshing) return;
+				this._freshing = true;
+				//请求服务端数据
+				this.music_page = 1;
+				uni.request({
+					url: service.DOMAIN + 'api/v1.Music/getMusic',
+					method: 'POST',
+					data: {
+						type: 1,
+						page: this.music_page,
+						limit: 8
+					},
+					success: res => {
+						console.log('刷新完毕')
+						this.list_home = [];
+						this.list_home = [...this.list_home, ...res.data.data];
+						this.triggered = false;
+						this._freshing = false;
+					},
+					fail: () => {},
+					complete: () => {
+
+					}
+				});
+			},
+			onRestore() {
+				console.log("onRestore");
+				this.triggered = 'restore'; // 需要重置
+
+			},
+			onAbort() {
+				console.log("onAbort");
+			},
 			//选择音乐
 			selectMusic(index) {
 				this.setMusic(this.list_home[index]);
@@ -143,12 +186,12 @@
 							this.loadState = "more";
 						} else {
 							this.music_page = this.music_page - 1;
-							this.loadState="noMore"
+							this.loadState = "noMore"
 						}
 					},
 					fail: () => {},
 					complete: () => {
-						
+
 					}
 				});
 			}
